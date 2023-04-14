@@ -2,6 +2,7 @@ package tdtu.edu.vn.shoes_store.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tdtu.edu.vn.shoes_store.model.Product;
@@ -23,10 +24,10 @@ public class ProductController {
     @GetMapping("/add")
     public Product addProduct() {
         Product product = new Product();
-        product.setName("test");
-        product.setPrice(1.0);
+        product.setName("Adidas Prophere Black White");
+        product.setPrice(450.0);
         product.setDescription("Nice");
-        product.setSize(List.of("M", "L", "XL"));
+        product.setSize(List.of("39", "40", "41","42", "43", "44"));
         product.setQuantity(100);
         product.setBrands("Adidas");
         product.setCategories("Men");
@@ -34,4 +35,11 @@ public class ProductController {
         productService.saveProduct(product);
         return product;
     }
+
+    @GetMapping("/{id}")
+    public Product getProductById(@PathVariable(name = "id") Long id) {
+        return productService.getProductById(id);
+    }
+
+
 }
