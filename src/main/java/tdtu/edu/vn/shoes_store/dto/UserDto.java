@@ -1,5 +1,6 @@
 package tdtu.edu.vn.shoes_store.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ public class UserDto {
     private String password;
     private String email;
 
+    @Builder
     public UserDto(Long id, String username, String password, String email) {
         this.id = id;
         this.username = username;

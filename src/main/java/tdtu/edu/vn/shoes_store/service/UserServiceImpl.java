@@ -14,15 +14,14 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository,
-                           RoleRepository roleRepository
-                           ) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-//        this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
+
 
     @Override
     public void registerUser(UserDto userToRegister) {
@@ -30,7 +29,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userToRegister.getUsername());
         user.setEmail(userToRegister.getEmail());
         user.setPassword(userToRegister.getPassword());
-//        user.setPassword(passwordEncoder.encode(userToRegister.getPassword()));
+        user.setPassword(passwordEncoder.encode(userToRegister.getPassword()));
 
         Role role = roleRepository.findByName("ROLE_USER");
         if (role == null) {
@@ -45,5 +44,10 @@ public class UserServiceImpl implements UserService {
         Role role = new Role();
         role.setName("ROLE_USER");
         return roleRepository.save(role);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }
