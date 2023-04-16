@@ -13,12 +13,16 @@ public class UserDto {
     private String username;
     private String password;
     private String email;
+    private String gender;
+    private String phone;
 
     @Builder
-    public UserDto(Long id, String username, String password, String email) {
+    public UserDto(Long id, String username, String password, String email, String gender, String phone) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.gender = gender;
+        this.phone = phone;
     }
 }

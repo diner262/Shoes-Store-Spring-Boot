@@ -19,19 +19,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username")
     private String username;
     @Column(name = "password", nullable = false)
     private String password;
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-    @Column(name = "gender", nullable = true)
+    @Column(name = "gender")
     private String gender;
-    @Column(name = "age", nullable = true)
+    @Column(name = "age")
     private Integer age;
-    @Column(name = "address", nullable = true)
+    @Column(name = "address")
     private String address;
-    @Column(name = "phone", nullable = true)
+    @Column(name = "phone")
     private String phone;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

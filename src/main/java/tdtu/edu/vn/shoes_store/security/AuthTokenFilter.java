@@ -1,10 +1,6 @@
 package tdtu.edu.vn.shoes_store.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -39,7 +35,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         final String requestTokenHeader = request.getHeader("Authorization");
         Map<String, Object> result = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
-        String errorMessage;
+        String errorMessage = "";
 
         String username = null;
         String jwtToken = null;
@@ -65,7 +61,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 return;
             }
          } else {
-            errorMessage = "JWT Token does not begin with Bearer String";
+            errorMessage = "Access denied. Bearer Token is missing.";
             request.setAttribute("message", errorMessage);
             logger.warn(errorMessage);
         }
@@ -79,7 +75,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             } else {
-                errorMessage = "JWT Token is invalid";
+                errorMessage = "Access Token is invalid or expired.";
                 request.setAttribute("message", errorMessage);
             }
         }

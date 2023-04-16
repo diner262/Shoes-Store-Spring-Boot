@@ -15,6 +15,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/product")
 public class ProductController {
+    private final Map<String, Object> result = new HashMap<>();
+
     @Autowired
     private ProductService productService;
 
@@ -26,17 +28,9 @@ public class ProductController {
     @PostMapping("/add")
     public ResponseEntity<Object> addProduct(@RequestBody ProductDto productDto) {
         Product product = new Product();
-        if(!productDto.getName().isEmpty()) product.setName(productDto.getName());
-        if(!productDto.getDescription().isEmpty()) product.setDescription(productDto.getDescription());
-        if(!productDto.getImage().isEmpty()) product.setImage(productDto.getImage());
-        if(!productDto.getCategories().isEmpty()) product.setCategories(productDto.getCategories());
-        if(!productDto.getBrands().isEmpty()) product.setBrands(productDto.getBrands());
-        if(!productDto.getSize().isEmpty()) product.setSize(productDto.getSize());
-        if(!productDto.getRelatedProducts().isEmpty()) product.setRelatedProducts(productDto.getRelatedProducts());
-        product.setPrice(productDto.getPrice());
+        getProductBody(productDto, product);
 
         productService.saveProduct(product);
-        Map<String, Object> result = new HashMap<>();
         result.put("status", HttpStatus.OK);
         result.put("message", "Add product successfully!");
         result.put("content", product);
@@ -51,7 +45,6 @@ public class ProductController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable(name = "id") Long id) {
-        Map<String, Object> result = new HashMap<>();
         Product product = productService.getProductById(id);
         if(product == null) {
             result.put("status", HttpStatus.NOT_FOUND);
@@ -68,21 +61,14 @@ public class ProductController {
     @PutMapping("/edit/{id}")
     public ResponseEntity<Object> updateProduct(@PathVariable(name = "id") Long id,
                                                 @RequestBody ProductDto productDto) {
-        Map<String, Object> result = new HashMap<>();
         Product product = productService.getProductById(id);
         if(product == null) {
             result.put("status", HttpStatus.NOT_FOUND);
             result.put("message", "Product not found!");
             return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
         }
-        if(!productDto.getName().isEmpty()) product.setName(productDto.getName());
-        if(!productDto.getDescription().isEmpty()) product.setDescription(productDto.getDescription());
-        if(!productDto.getImage().isEmpty()) product.setImage(productDto.getImage());
-        if(!productDto.getCategories().isEmpty()) product.setCategories(productDto.getCategories());
-        if(!productDto.getBrands().isEmpty()) product.setBrands(productDto.getBrands());
-        if(!productDto.getSize().isEmpty()) product.setSize(productDto.getSize());
-        if(!productDto.getRelatedProducts().isEmpty()) product.setRelatedProducts(productDto.getRelatedProducts());
-        product.setPrice(productDto.getPrice());
+
+        getProductBody(productDto, product);
 
         productService.updateProduct(product);
         result.put("status", HttpStatus.OK);
@@ -92,4 +78,16 @@ public class ProductController {
     }
 
 
+     private void getProductBody(ProductDto productDto, Product product) {
+
+        if(productDto.getName() != null) product.setName(productDto.getName());
+        if(productDto.getDescription() != null) product.setDescription(productDto.getDescription());
+        if(productDto.getImage() != null) product.setImage(productDto.getImage());
+        if(productDto.getCategories() != null) product.setCategories(productDto.getCategories());
+        if(productDto.getBrands() != null) product.setBrands(productDto.getBrands());
+        if(productDto.getSize() != null) product.setSize(productDto.getSize());
+        if(productDto.getRelatedProducts() != null) product.setRelatedProducts(productDto.getRelatedProducts());
+        product.setPrice(productDto.getPrice());
+        product.setQuantity(productDto.getQuantity());
+    }
 }

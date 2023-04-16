@@ -1,6 +1,5 @@
 package tdtu.edu.vn.shoes_store.security.jwt;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
