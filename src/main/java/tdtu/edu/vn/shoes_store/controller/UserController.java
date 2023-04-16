@@ -71,12 +71,12 @@ public class UserController {
         final String token = jwtTokenUtil.generateToken(userDetails);
         tokenStore.storeToken(token);
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("status", HttpStatus.OK);
-        map.put("message", "Login success!");
-        map.put("content", userDetails);
-        map.put("accessToken", new JwtResponse(token));
-        return new  ResponseEntity<>(map, HttpStatus.OK);
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", HttpStatus.OK);
+        result.put("message", "Login success!");
+        result.put("content", userDetails);
+        result.put("accessToken", new JwtResponse(token));
+        return new  ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("/logout")

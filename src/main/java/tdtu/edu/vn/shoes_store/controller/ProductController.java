@@ -1,14 +1,16 @@
 package tdtu.edu.vn.shoes_store.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import tdtu.edu.vn.shoes_store.dto.ProductDto;
 import tdtu.edu.vn.shoes_store.model.Product;
 import tdtu.edu.vn.shoes_store.service.ProductService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/product")
@@ -21,24 +23,72 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/add")
-    public Product addProduct() {
+    @PostMapping("/add")
+    public ResponseEntity<Object> addProduct(@RequestBody ProductDto productDto) {
         Product product = new Product();
-        product.setName("Adidas Prophere Black White");
-        product.setPrice(450.0);
-        product.setDescription("Nice");
-        product.setSize(List.of("39", "40", "41","42", "43", "44"));
-        product.setQuantity(100);
-        product.setBrands("Adidas");
-        product.setCategories("Men");
-        product.setRelatedProducts(List.of(1L, 2L, 3L));
+        if(!productDto.getName().isEmpty()) product.setName(productDto.getName());
+        if(!productDto.getDescription().isEmpty()) product.setDescription(productDto.getDescription());
+        if(!productDto.getImage().isEmpty()) product.setImage(productDto.getImage());
+        if(!productDto.getCategories().isEmpty()) product.setCategories(productDto.getCategories());
+        if(!productDto.getBrands().isEmpty()) product.setBrands(productDto.getBrands());
+        if(!productDto.getSize().isEmpty()) product.setSize(productDto.getSize());
+        if(!productDto.getRelatedProducts().isEmpty()) product.setRelatedProducts(productDto.getRelatedProducts());
+        product.setPrice(productDto.getPrice());
+
         productService.saveProduct(product);
-        return product;
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", HttpStatus.OK);
+        result.put("message", "Add product successfully!");
+        result.put("content", product);
+
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable(name = "id") Long id) {
         return productService.getProductById(id);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteProduct(@PathVariable(name = "id") Long id) {
+        Map<String, Object> result = new HashMap<>();
+        Product product = productService.getProductById(id);
+        if(product == null) {
+            result.put("status", HttpStatus.NOT_FOUND);
+            result.put("message", "Product not found!");
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
+
+        productService.deleteProduct(product.getId());
+        result.put("status", HttpStatus.OK);
+        result.put("message", "Delete product successfully!");
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Object> updateProduct(@PathVariable(name = "id") Long id,
+                                                @RequestBody ProductDto productDto) {
+        Map<String, Object> result = new HashMap<>();
+        Product product = productService.getProductById(id);
+        if(product == null) {
+            result.put("status", HttpStatus.NOT_FOUND);
+            result.put("message", "Product not found!");
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
+        if(!productDto.getName().isEmpty()) product.setName(productDto.getName());
+        if(!productDto.getDescription().isEmpty()) product.setDescription(productDto.getDescription());
+        if(!productDto.getImage().isEmpty()) product.setImage(productDto.getImage());
+        if(!productDto.getCategories().isEmpty()) product.setCategories(productDto.getCategories());
+        if(!productDto.getBrands().isEmpty()) product.setBrands(productDto.getBrands());
+        if(!productDto.getSize().isEmpty()) product.setSize(productDto.getSize());
+        if(!productDto.getRelatedProducts().isEmpty()) product.setRelatedProducts(productDto.getRelatedProducts());
+        product.setPrice(productDto.getPrice());
+
+        productService.updateProduct(product);
+        result.put("status", HttpStatus.OK);
+        result.put("message", "Update product successfully!");
+        result.put("content", product);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
 
