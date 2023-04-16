@@ -1,6 +1,11 @@
 package tdtu.edu.vn.shoes_store.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +21,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class AuthTokenFilter extends OncePerRequestFilter {
@@ -29,6 +37,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("Authorization");
+        Map<String, Object> result = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+        String errorMessage;
 
         String username = null;
         String jwtToken = null;
@@ -37,13 +48,26 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             jwtToken = requestTokenHeader.substring(7);
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
-            } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
+            } catch (Exception e) {
+                // Log the error message
+                logger.error("Error during authentication", e);
+
+                JSONObject errorResponse = new JSONObject();
+                errorResponse.put("status", response.SC_UNAUTHORIZED);
+                errorResponse.put("timeStamp", LocalTime.now());
+                errorResponse.put("error", "UNAUTHORIZED");
+                errorResponse.put("message", e.getMessage());
+                errorResponse.put("path", request.getServletPath());
+
+                response.setContentType("application/json");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write(errorResponse.toString());
+                return;
             }
-        } else {
-            logger.warn("JWT Token does not begin with Bearer String");
+         } else {
+            errorMessage = "JWT Token does not begin with Bearer String";
+            request.setAttribute("message", errorMessage);
+            logger.warn(errorMessage);
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -54,6 +78,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            } else {
+                errorMessage = "JWT Token is invalid";
+                request.setAttribute("message", errorMessage);
             }
         }
         filterChain.doFilter(request, response);

@@ -76,7 +76,7 @@ public class UserController {
         result.put("message", "Login success!");
         result.put("content", userDetails);
         result.put("accessToken", new JwtResponse(token));
-        return new  ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("/logout")
