@@ -1,6 +1,5 @@
 package tdtu.edu.vn.shoes_store.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 public class AuthTokenFilter extends OncePerRequestFilter {
@@ -33,8 +30,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("Authorization");
-        Map<String, Object> result = new HashMap<>();
-        ObjectMapper mapper = new ObjectMapper();
         String errorMessage = "";
 
         String username = null;
