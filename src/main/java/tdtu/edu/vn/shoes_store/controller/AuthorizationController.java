@@ -21,8 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/user")
-public class UserController {
+@RequestMapping("/api/auth")
+public class AuthorizationController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -52,8 +52,8 @@ public class UserController {
 
         userService.registerUser(userDto);
         result.put("statusCode", HttpStatus.OK.value());
-        result.put("message", "Register user successfully!");
-        result.put("content", userDto);
+        result.put("timeStamp", LocalTime.now());
+        result.put("message", "Register account successfully!");
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
