@@ -1,5 +1,6 @@
 package tdtu.edu.vn.shoes_store.service;
 
+import org.springframework.security.core.Transient;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tdtu.edu.vn.shoes_store.dto.UserDto;
@@ -11,6 +12,7 @@ import tdtu.edu.vn.shoes_store.repository.UserRepository;
 import java.util.List;
 
 @Service
+@Transient
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;

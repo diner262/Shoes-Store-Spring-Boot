@@ -22,7 +22,11 @@ public class Product {
     @ElementCollection
     private List<String> size;
     private int quantity;
-    private String brands;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id")
+    private Brands brands;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Categories categories;
