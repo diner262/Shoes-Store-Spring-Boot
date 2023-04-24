@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     private static final long serialVersionUID = 1L;
 
@@ -19,26 +19,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username")
     private String username;
     @Column(name = "password", nullable = false)
     private String password;
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-    @Column(name = "gender", nullable = true)
+    @Column(name = "gender")
     private String gender;
-    @Column(name = "age", nullable = true)
+    @Column(name = "age")
     private Integer age;
-    @Column(name = "address", nullable = true)
+    @Column(name = "address")
     private String address;
-    @Column(name = "phone", nullable = true)
+    @Column(name = "phone")
     private String phone;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
-    private List<Role> roles = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
 }

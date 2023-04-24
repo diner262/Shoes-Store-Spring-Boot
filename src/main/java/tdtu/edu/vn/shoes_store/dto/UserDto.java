@@ -9,16 +9,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDto {
-    private Long id;
     private String username;
     private String password;
     private String email;
+    private String gender;
+    private String phone;
 
     @Builder
-    public UserDto(Long id, String username, String password, String email) {
-        this.id = id;
+    public UserDto(String username, String password, String email, String gender, String phone) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.gender = gender;
+        this.phone = phone;
     }
 }

@@ -9,8 +9,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
-@Table(name = "product")
+@Table(name = "products")
 public class Product {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,8 +22,15 @@ public class Product {
     @ElementCollection
     private List<String> size;
     private int quantity;
-    private String brands;
-    private String categories;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id")
+    private Brands brands;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Categories categories;
+
     @ElementCollection
     private List<Long> relatedProducts;
     private String image;
