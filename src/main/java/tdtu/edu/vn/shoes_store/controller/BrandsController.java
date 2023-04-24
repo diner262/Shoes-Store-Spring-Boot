@@ -27,6 +27,13 @@ public class BrandsController {
     @PostMapping
     public ResponseEntity<Object> addBrands(@RequestBody Brands brands) {
         Map<String, Object> result = new HashMap<>();
+        Brands existingBrand = brandsService.findByName(brands.getName());
+        if (existingBrand != null) {
+            result.put("statusCode", HttpStatus.BAD_REQUEST.value());
+            result.put("message", "Brand already exists!");
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        }
+
         brandsService.saveBrands(brands);
         result.put("statusCode", HttpStatus.OK.value());
         result.put("message", "Create new brand successfully!");
@@ -61,7 +68,15 @@ public class BrandsController {
         Map<String, Object> result = new HashMap<>();
         Brands brand = brandsService.findById(id);
         if (brand != null) {
-            if(brands.getName() != null) brand.setName(brands.getName());
+            if(brands.getName() != null) {
+                Brands existingBrand = brandsService.findByName(brands.getName());
+                if (existingBrand != null && !existingBrand.getId(). equals(id)) {
+                    result.put("statusCode", HttpStatus.BAD_REQUEST.value());
+                    result.put("message", "Brand already exists!");
+                    return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+                }
+                brand.setName(brands.getName());
+            }
             brandsService.updateBrands(brand);
 
             result.put("statusCode", HttpStatus.OK.value());

@@ -27,6 +27,13 @@ public class CategoriesController {
     @PostMapping
     public ResponseEntity<Object> addCategories(@RequestBody Categories categories) {
         Map<String, Object> result = new HashMap<>();
+        Categories existingCategories = categoriesService.findByName(categories.getName());
+        if (existingCategories != null) {
+            result.put("statusCode", HttpStatus.BAD_REQUEST.value());
+            result.put("message", "Category already exists!");
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        }
+
         categoriesService.saveCategories(categories);
         result.put("statusCode", HttpStatus.OK.value());
         result.put("message", "Create new category successfully!");
@@ -61,7 +68,15 @@ public class CategoriesController {
         Map<String, Object> result = new HashMap<>();
         Categories category = categoriesService.findById(id);
         if (category != null) {
-            if(categories.getName() != null) category.setName(categories.getName());
+            if(categories.getName() != null) {
+                Categories existingCategories = categoriesService.findByName(categories.getName());
+                if (existingCategories != null && !existingCategories.getId().equals(id)) {
+                    result.put("statusCode", HttpStatus.BAD_REQUEST.value());
+                    result.put("message", "Category already exists!");
+                    return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+                }
+                category.setName(categories.getName());
+            }
             categoriesService.updateCategories(category);
 
             result.put("statusCode", HttpStatus.OK.value());
