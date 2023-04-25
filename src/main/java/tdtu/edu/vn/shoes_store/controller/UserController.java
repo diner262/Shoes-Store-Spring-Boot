@@ -100,4 +100,5 @@ public class UserController {
         tokenStore.removeToken(token);
         return ResponseEntity.ok().body("Logged out successfully");
     }
+
 }
