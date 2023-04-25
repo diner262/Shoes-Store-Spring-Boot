@@ -13,7 +13,7 @@ public interface ProductService {
     Product getProductById(Long id);
     List<Product> getAllProducts();
 
-    List<Product> getAllProductByBrands(String brands);
+    List<Product> getAllProductByBrands(Long id);
 
-    List<Product> getAllProductByCategories(String category);
+    List<Product> getAllProductByCategories(Long id);
 }

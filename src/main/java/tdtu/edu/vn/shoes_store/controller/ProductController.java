@@ -87,13 +87,13 @@ public class ProductController {
     }
 
     @GetMapping("/getByBrands")
-    public List<ProductDto> getAllProductByBrands(@RequestParam String brand) {
-        return getListProduct(productService.getAllProductByBrands(brand));
+    public List<ProductDto> getAllProductByBrands(@RequestParam Long id) {
+        return getListProduct(productService.getAllProductByBrands(id));
     }
 
     @GetMapping("/getByCategories")
-    public List<ProductDto> getAllProductByCategories(@RequestParam String category) {
-        return getListProduct(productService.getAllProductByCategories(category));
+    public List<ProductDto> getAllProductByCategories(@RequestParam Long id) {
+        return getListProduct(productService.getAllProductByCategories(id));
     }
 
      private Product getProductBody(ProductDto productDto) {
