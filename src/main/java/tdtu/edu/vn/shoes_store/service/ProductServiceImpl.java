@@ -41,10 +41,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProductByBrands(String brands) {
+    public List<Product> getAllProductByBrands(Long id) {
         List<Product> productsByBrands = new ArrayList<>();
         for (Product product : this.getAllProducts()) {
-            if (product.getBrands().getName().equals(brands)) {
+            if (product.getBrands().getId().equals(id)) {
                 productsByBrands.add(product);
             }
         }
@@ -53,10 +53,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProductByCategories(String category) {
+    public List<Product> getAllProductByCategories(Long id) {
         List<Product> productsByCategories = new ArrayList<>();
         for (Product product : this.getAllProducts()) {
-            if (product.getCategories().getName().equals(category)) {
+            if (product.getCategories().getId().equals(id)) {
                 productsByCategories.add(product);
             }
         }
