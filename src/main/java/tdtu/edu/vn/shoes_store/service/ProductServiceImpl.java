@@ -1,6 +1,7 @@
 package tdtu.edu.vn.shoes_store.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Transient;
 import org.springframework.stereotype.Service;
 import tdtu.edu.vn.shoes_store.model.Product;
 import tdtu.edu.vn.shoes_store.repository.ProductRepository;
@@ -8,6 +9,7 @@ import tdtu.edu.vn.shoes_store.repository.ProductRepository;
 import java.util.List;
 
 @Service
+@Transient
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
