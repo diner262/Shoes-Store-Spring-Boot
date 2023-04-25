@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import tdtu.edu.vn.shoes_store.model.Product;
 import tdtu.edu.vn.shoes_store.repository.ProductRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,5 +38,28 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> getAllProductByBrands(String brands) {
+        List<Product> productsByBrands = new ArrayList<>();
+        for (Product product : this.getAllProducts()) {
+            if (product.getBrands().getName().equals(brands)) {
+                productsByBrands.add(product);
+            }
+        }
+
+        return productsByBrands;
+    }
+
+    @Override
+    public List<Product> getAllProductByCategories(String category) {
+        List<Product> productsByCategories = new ArrayList<>();
+        for (Product product : this.getAllProducts()) {
+            if (product.getCategories().getName().equals(category)) {
+                productsByCategories.add(product);
+            }
+        }
+        return productsByCategories;
     }
 }
