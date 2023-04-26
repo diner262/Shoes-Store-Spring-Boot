@@ -62,4 +62,11 @@ public class ProductServiceImpl implements ProductService {
         }
         return productsByCategories;
     }
+
+    @Override
+    public List<Product> getAllProductByBrandsAndCategories(Long brand, Long category) {
+        return this.getAllProductByBrands(brand)
+                .stream().filter(product -> product.getCategories().getId().equals(category))
+                .toList();
+    }
 }
