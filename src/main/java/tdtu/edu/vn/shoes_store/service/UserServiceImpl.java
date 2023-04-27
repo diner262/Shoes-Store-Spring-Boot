@@ -9,6 +9,8 @@ import tdtu.edu.vn.shoes_store.model.User;
 import tdtu.edu.vn.shoes_store.repository.RoleRepository;
 import tdtu.edu.vn.shoes_store.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,7 +67,7 @@ public class UserServiceImpl implements UserService {
             userDto.setPassword(user.get().getPassword());
             userDto.setPhone(user.get().getPhone());
             userDto.setUsername(user.get().getUsername());
-            userDto.setRole(user.get().getRole().getName());
+            userDto.setRole(user.get().getRole().getId());
             return userDto;
         }
         return null;
@@ -82,9 +84,11 @@ public class UserServiceImpl implements UserService {
             user.setGender(userDto.getGender());
 //            user.setPassword(userDto.getPassword());
             user.setPhone(userDto.getPhone());
-//            user.setUsername(userDto.getUsername());
-            Role role = roleRepository.findByName(userDto.getRole());
-            user.setRole(role);
+            Optional<Role> role = roleRepository.findById(userDto.getRole()); // tìm kiếm role trong cơ sở dữ liệu
+            if (!role.isPresent()) { // nếu không tìm thấy role, trả về null
+                return null;
+            }
+            user.setRole(role.get()); //
             User updatedUser = userRepository.save(user);
             UserDto updatedUserDto = new UserDto();
             updatedUserDto.setId(updatedUser.getId());
@@ -92,13 +96,63 @@ public class UserServiceImpl implements UserService {
             updatedUserDto.setAge(updatedUser.getAge());
             updatedUserDto.setEmail(updatedUser.getEmail());
             updatedUserDto.setGender(updatedUser.getGender());
-//            updatedUserDto.setPassword(updatedUser.getPassword());
+            updatedUserDto.setPassword(updatedUser.getPassword());
             updatedUserDto.setPhone(updatedUser.getPhone());
-//            updatedUserDto.setUsername(updatedUser.getUsername());
-            updatedUserDto.setRole(updatedUser.getRole().getName());
+            updatedUserDto.setUsername(updatedUser.getUsername());
+            updatedUserDto.setRole(updatedUser.getRole().getId());
             return updatedUserDto;
         }
         return null;
+    }
+
+    @Override
+    public List<UserDto> getAllUser(){
+        List<User> users = userRepository.findAll();
+        List<UserDto> userDtos = new ArrayList<>();
+        for (User user : users) {
+            UserDto userDto = new UserDto();
+            userDto.setId(user.getId());
+            userDto.setAddress(user.getAddress());
+            userDto.setAge(user.getAge());
+            userDto.setEmail(user.getEmail());
+            userDto.setGender(user.getGender());
+            userDto.setPassword(user.getPassword());
+            userDto.setPhone(user.getPhone());
+            userDto.setUsername(user.getUsername());
+            userDto.setRole(user.getRole().getId());
+            userDtos.add(userDto);
+        }
+        return userDtos;
+    }
+
+    @Override
+    public UserDto addUser(UserDto userDto) {
+        User user = new User();
+        user.setAddress(userDto.getAddress());
+        user.setAge(userDto.getAge());
+        user.setEmail(userDto.getEmail());
+        user.setGender(userDto.getGender());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword())); // mã hóa password trước khi lưu vào cơ sở dữ liệu
+        user.setPhone(userDto.getPhone());
+        user.setUsername(userDto.getUsername());
+        Optional<Role> role = roleRepository.findById(userDto.getRole()); // tìm kiếm role trong cơ sở dữ liệu
+        if (!role.isPresent()) { // nếu không tìm thấy role, trả về null
+            return null;
+        }
+        user.setRole(role.get()); // gán role cho user
+        userRepository.save(user);
+        return userDto;
+    }
+
+    @Override
+    public boolean deleteUserByID(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()){
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
+
     }
 
 
