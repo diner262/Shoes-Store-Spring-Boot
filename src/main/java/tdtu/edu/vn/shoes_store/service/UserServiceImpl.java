@@ -71,5 +71,35 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public UserDto updateUserByID(Long id, UserDto userDto) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setAddress(userDto.getAddress());
+            user.setAge(userDto.getAge());
+            user.setEmail(userDto.getEmail());
+            user.setGender(userDto.getGender());
+//            user.setPassword(userDto.getPassword());
+            user.setPhone(userDto.getPhone());
+//            user.setUsername(userDto.getUsername());
+            Role role = roleRepository.findByName(userDto.getRole());
+            user.setRole(role);
+            User updatedUser = userRepository.save(user);
+            UserDto updatedUserDto = new UserDto();
+            updatedUserDto.setId(updatedUser.getId());
+            updatedUserDto.setAddress(updatedUser.getAddress());
+            updatedUserDto.setAge(updatedUser.getAge());
+            updatedUserDto.setEmail(updatedUser.getEmail());
+            updatedUserDto.setGender(updatedUser.getGender());
+//            updatedUserDto.setPassword(updatedUser.getPassword());
+            updatedUserDto.setPhone(updatedUser.getPhone());
+//            updatedUserDto.setUsername(updatedUser.getUsername());
+            updatedUserDto.setRole(updatedUser.getRole().getName());
+            return updatedUserDto;
+        }
+        return null;
+    }
+
 
 }

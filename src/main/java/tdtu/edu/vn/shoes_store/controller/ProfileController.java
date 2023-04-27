@@ -33,4 +33,17 @@ public class ProfileController {
         return ResponseEntity.ok(userDto);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        UserDto updatedUser = userService.updateUserByID(id, userDto);
+//        System.out.print("Id" + id);
+//        System.out.print("User old" + userDto);
+        if (updatedUser != null) {
+            return ResponseEntity.ok(updatedUser);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+//        return ResponseEntity.ok("haha");
+    }
+
 }
