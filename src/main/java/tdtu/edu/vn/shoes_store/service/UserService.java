@@ -8,4 +8,6 @@ import tdtu.edu.vn.shoes_store.model.User;
 public interface UserService {
     void registerUser(UserDto userDto);
     User findUserByEmail(String email);
+
+    UserDto findUserByID(Long id);
 }

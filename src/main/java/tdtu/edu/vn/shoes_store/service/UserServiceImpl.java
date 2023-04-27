@@ -9,7 +9,7 @@ import tdtu.edu.vn.shoes_store.model.User;
 import tdtu.edu.vn.shoes_store.repository.RoleRepository;
 import tdtu.edu.vn.shoes_store.repository.UserRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transient
@@ -51,4 +51,25 @@ public class UserServiceImpl implements UserService {
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    @Override
+    public UserDto findUserByID(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            UserDto userDto = new UserDto();
+            userDto.setId(user.get().getId());
+            userDto.setAddress(user.get().getAddress());
+            userDto.setAge(user.get().getAge());
+            userDto.setEmail(user.get().getEmail());
+            userDto.setGender(user.get().getGender());
+            userDto.setPassword(user.get().getPassword());
+            userDto.setPhone(user.get().getPhone());
+            userDto.setUsername(user.get().getUsername());
+            userDto.setRole(user.get().getRole().getName());
+            return userDto;
+        }
+        return null;
+    }
+
+
 }
