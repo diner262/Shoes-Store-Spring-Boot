@@ -112,4 +112,5 @@ public class AuthorizationController {
         result.put("message", "Logged out successfully!");
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
 }
