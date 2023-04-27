@@ -27,10 +27,12 @@ public class ProductController {
     @Autowired
     private CategoriesService categoriesService;
 
+
     @GetMapping
     public List<ProductDto> getAllProduct() {
         return getListProduct(productService.getAllProducts());
     }
+
 
     @PostMapping
     public ResponseEntity<Object> addProduct(@RequestBody ProductDto productDto) {
@@ -84,6 +86,21 @@ public class ProductController {
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
+    @GetMapping("/getByBrands")
+    public List<ProductDto> getAllProductByBrands(@RequestParam Long id) {
+        return getListProduct(productService.getAllProductByBrands(id));
+    }
+
+    @GetMapping("/getByCategories")
+    public List<ProductDto> getAllProductByCategories(@RequestParam Long id) {
+        return getListProduct(productService.getAllProductByCategories(id));
+    }
+
+    @GetMapping("/getByBrandsAndCategories")
+    public List<ProductDto> getAllProductByBrandsAndCategories(@RequestParam Long brand, @RequestParam Long category) {
+        return getListProduct(productService.getAllProductByBrandsAndCategories(brand, category));
+
+    }
 
      private Product getProductBody(ProductDto productDto) {
         Product product = new Product();
