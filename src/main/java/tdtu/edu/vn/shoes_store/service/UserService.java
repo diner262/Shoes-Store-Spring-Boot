@@ -12,9 +12,14 @@ public interface UserService {
     User findUserByEmail(String email);
     UserDto findUserByID(Long id);
     UserDto updateUserByID(Long id,UserDto userDto);
+    UserDto updateUserByToken(String token,UserDto userDto);
     List<UserDto> getAllUser();
 
     UserDto addUser(UserDto userDto);
 
     boolean deleteUserByID(Long id);
+
+    UserDto findUserByToken(String token);
+
+
 }

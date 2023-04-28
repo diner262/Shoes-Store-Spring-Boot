@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import tdtu.edu.vn.shoes_store.dto.UserDto;
 import tdtu.edu.vn.shoes_store.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,17 @@ public class UserController {
         return  ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<UserDto> getUserByToken(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring(7);
+        System.out.println(token);
+
+        UserDto userDto = userService.findUserByToken(token);
+        if (userDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(userDto);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserByID(@PathVariable(name = "id") Long id) {
         UserDto userDto = userService.findUserByID(id);
@@ -90,4 +102,21 @@ public class UserController {
         }
     }
 
+
+    @PutMapping("/profile")
+    public ResponseEntity<?> updateUserByToken(HttpServletRequest request, @RequestBody UserDto userDto) {
+
+        String token = request.getHeader("Authorization").substring(7);
+        UserDto updatedUser = userService.updateUserByToken(token, userDto);
+        Map<String, Object> result = new HashMap<>();
+        if (updatedUser != null) {
+            result.put("statusCode", HttpStatus.OK.value());
+            result.put("message","Update user successfully!");
+            result.put("content",updatedUser);
+            return  new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
