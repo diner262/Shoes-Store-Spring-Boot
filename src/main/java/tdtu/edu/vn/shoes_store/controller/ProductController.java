@@ -96,11 +96,10 @@ public class ProductController {
         return getListProduct(productService.getAllProductByCategories(id));
     }
 
-    @GetMapping("/getByBrandsAndCategories")
-    public List<ProductDto> getAllProductByBrandsAndCategories(@RequestParam Long brand, @RequestParam Long category) {
-        return getListProduct(productService.getAllProductByBrandsAndCategories(brand, category));
-
-    }
+//    @GetMapping("/getByBrandsAndCategories")
+//    public List<ProductDto> getAllProductByBrandsAndCategories(@RequestParam Long brand, @RequestParam Long category) {
+//        return getListProduct(productService.getAllProductByBrandsAndCategories(brand, category));
+//    }
 
      private Product getProductBody(ProductDto productDto) {
         Product product = new Product();

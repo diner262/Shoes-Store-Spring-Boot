@@ -4,9 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import tdtu.edu.vn.shoes_store.model.Categories;
-import tdtu.edu.vn.shoes_store.model.Product;
-import tdtu.edu.vn.shoes_store.repository.CategoriesRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import tdtu.edu.vn.shoes_store.model.Role;
+import tdtu.edu.vn.shoes_store.model.User;
+import tdtu.edu.vn.shoes_store.repository.RoleRepository;
 
 import java.util.Collections;
 
@@ -18,22 +19,23 @@ public class ShoesStoreApplication implements CommandLineRunner {
 	}
 
 	@Autowired
-	private CategoriesRepository categoriesRepository;
+	private RoleRepository roleRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public void run(String... args) throws Exception {
-//		Categories categories = new Categories();
-//		categories.setName("Kid");
-//		categoriesRepository.saveAndFlush(categories);
-
-//		Product product = new Product();
-//		product.setName("Adidas Prophere");
-//		product.setPrice(1000);
-//		product.setDescription("The adidas Primeknit upper wraps the foot with a supportive fit that enhances movement");
-//		product.setCategories(categories);
+//		Role role = new Role();
+//		role.setName("ROLE_ADMIN");
 //
-//		categories.setProducts(Collections.singletonList(product));
-
-//		categoriesRepository.saveAndFlush(categories);
+//		User user = new User();
+//		user.setUsername("admin");
+//		user.setPassword(passwordEncoder.encode("123456"));
+//		user.setEmail("admin@gmail.com");
+//		user.setRole(role);
+//
+//		role.setUsers(Collections.singletonList(user));
+//		roleRepository.save(role);
 	}
 }

@@ -48,6 +48,8 @@ public class AuthorizationController {
             return new ResponseEntity<>("Gender is required!", HttpStatus.BAD_REQUEST);
         } else if (userDto.getPhone() == null) {
             return new ResponseEntity<>("Phone is required!", HttpStatus.BAD_REQUEST);
+        } else if (userService.findUserByEmail(userDto.getEmail()) != null) {
+            return new ResponseEntity<>("Email already exists!", HttpStatus.BAD_REQUEST);
         }
 
         userService.registerUser(userDto);
