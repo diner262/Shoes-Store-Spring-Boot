@@ -10,9 +10,7 @@ import java.util.List;
 public interface UserService {
     void registerUser(UserDto userDto);
     User findUserByEmail(String email);
-
     UserDto findUserByID(Long id);
-
     UserDto updateUserByID(Long id,UserDto userDto);
     List<UserDto> getAllUser();
 

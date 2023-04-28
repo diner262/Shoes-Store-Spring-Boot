@@ -23,7 +23,7 @@ public class UserDto {
     private Long role;
 
     @Builder
-    public UserDto(Long id, String address, int age,String username, String password, String email, String gender, String phone,Long role) {
+    public UserDto(Long id, String address, int age,String username, String password, String email, String gender, String phone, Long role) {
         this.id = id;
         this.address = address;
         this.age = age;

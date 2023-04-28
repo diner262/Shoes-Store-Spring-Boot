@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import tdtu.edu.vn.shoes_store.dto.UserDto;
+import tdtu.edu.vn.shoes_store.model.User;
 import tdtu.edu.vn.shoes_store.security.TokenStore;
 import tdtu.edu.vn.shoes_store.security.jwt.JwtRequest;
 import tdtu.edu.vn.shoes_store.security.jwt.JwtTokenUtil;
@@ -115,4 +116,39 @@ public class AuthorizationController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PostMapping("getProfile")
+    public ResponseEntity<Object> getProfile(@RequestHeader("Authorization") String authToken) {
+        Map<String, Object> result = new HashMap<>();
+        String token = authToken.replace("Bearer ", "");
+        String email = jwtTokenUtil.getUsernameFromToken(token);
+
+        User user = userService.findUserByEmail(email);
+        if (user != null) {
+            UserDto userDto = getUserDtoBody(user);
+            result.put("statusCode", HttpStatus.OK.value());
+            result.put("timeStamp", LocalTime.now());
+            result.put("message", "Get profile successfully!");
+            result.put("content", userDto);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            result.put("statusCode", HttpStatus.NOT_FOUND.value());
+            result.put("timeStamp", LocalTime.now());
+            result.put("message", "User not found!");
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    private UserDto getUserDtoBody(User user) {
+        UserDto userDto = new UserDto();
+
+        if (user.getEmail() != null) userDto.setEmail(user.getEmail());
+        if (user.getUsername() != null) userDto.setUsername(user.getUsername());
+        if (user.getGender() != null) userDto.setGender(user.getGender());
+        if (user.getPhone() != null) userDto.setPhone(user.getPhone());
+        if (user.getAddress() != null) userDto.setAddress(user.getAddress());
+        if (user.getAge() != null) userDto.setAge(user.getAge());
+        if (user.getPassword() != null) userDto.setPassword(user.getPassword());
+
+        return userDto;
+    }
 }
