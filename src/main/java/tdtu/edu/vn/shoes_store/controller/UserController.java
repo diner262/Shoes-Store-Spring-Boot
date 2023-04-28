@@ -6,9 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tdtu.edu.vn.shoes_store.dto.UserDto;
-import tdtu.edu.vn.shoes_store.model.Product;
-import tdtu.edu.vn.shoes_store.repository.UserRepository;
-import tdtu.edu.vn.shoes_store.security.jwt.JwtTokenUtil;
 import tdtu.edu.vn.shoes_store.service.UserService;
 
 import java.util.HashMap;
@@ -16,36 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/profile")
+@RequestMapping("api/users")
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getProfileByID(@PathVariable(name = "id") Long id) {
-        UserDto userDto = userService.findUserByID(id);
-        if (userDto == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(userDto);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
-        UserDto updatedUser = userService.updateUserByID(id, userDto);
-        if (updatedUser != null) {
-            return ResponseEntity.ok(updatedUser);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/admin")
+    @GetMapping
     public  ResponseEntity<List<UserDto>> getAllUser(){
         List<UserDto> userDtoList = userService.getAllUser();
         if(userDtoList != null){
@@ -54,7 +27,27 @@ public class UserController {
         return  ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/admin")
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUserByID(@PathVariable(name = "id") Long id) {
+        UserDto userDto = userService.findUserByID(id);
+        if (userDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(userDto);
+    }
+
+//    @PutMapping("/{id}")
+//    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+//        UserDto updatedUser = userService.updateUserByID(id, userDto);
+//        if (updatedUser != null) {
+//            return ResponseEntity.ok(updatedUser);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+
+
+    @PostMapping("")
     public ResponseEntity<Object> addUser(@RequestBody UserDto userDto) {
         Map<String, Object> result = new HashMap<>();
         userService.addUser(userDto);
@@ -67,7 +60,7 @@ public class UserController {
     }
 
 
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
         Map<String, Object> result = new HashMap<>();
         if(!userService.deleteUserByID(id)){
@@ -82,8 +75,8 @@ public class UserController {
         }
     }
 
-    @PutMapping("/admin/{id}")
-    public ResponseEntity<?> updateUserfromAdmin(@PathVariable Long id, @RequestBody UserDto userDto) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
         UserDto updatedUser = userService.updateUserByID(id, userDto);
         Map<String, Object> result = new HashMap<>();
         if (updatedUser != null) {

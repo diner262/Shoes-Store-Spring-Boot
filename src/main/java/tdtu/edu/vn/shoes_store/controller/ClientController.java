@@ -2,7 +2,11 @@ package tdtu.edu.vn.shoes_store.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import tdtu.edu.vn.shoes_store.dto.BrandsDto;
+import tdtu.edu.vn.shoes_store.dto.CategoriesDto;
 import tdtu.edu.vn.shoes_store.dto.ProductDto;
+import tdtu.edu.vn.shoes_store.model.Brands;
+import tdtu.edu.vn.shoes_store.model.Categories;
 import tdtu.edu.vn.shoes_store.model.Product;
 import tdtu.edu.vn.shoes_store.service.BrandsService;
 import tdtu.edu.vn.shoes_store.service.CategoriesService;
@@ -43,6 +47,16 @@ public class ClientController {
         return getListProduct(productService.getAllProductByCategories(id));
     }
 
+    @GetMapping("/brands")
+    public List<BrandsDto> getAllBrands() {
+        return getListBrands(brandsService.getAllBrands());
+    }
+
+    @GetMapping("/categories")
+    public List<CategoriesDto> getAllCategories() {
+        return getListCategories(categoriesService.getAllCategories());
+    }
+
     private ProductDto getProductDtoBody(Product product) {
         ProductDto productDto = new ProductDto();
 
@@ -67,5 +81,27 @@ public class ClientController {
             listProduct.add(productDto);
         }
         return listProduct;
+    }
+
+    private List<CategoriesDto> getListCategories(List<Categories> categories) {
+        List<CategoriesDto> listCategories = new ArrayList<>();
+        for (Categories category : categories) {
+            CategoriesDto categoriesDto = new CategoriesDto();
+            categoriesDto.setId(category.getId());
+            categoriesDto.setName(category.getName());
+            listCategories.add(categoriesDto);
+        }
+        return listCategories;
+    }
+
+    private List<BrandsDto> getListBrands(List<Brands> brands) {
+        List<BrandsDto> listBrands = new ArrayList<>();
+        for (Brands brand : brands) {
+            BrandsDto brandDto = new BrandsDto();
+            brandDto.setId(brand.getId());
+            brandDto.setName(brand.getName());
+            listBrands.add(brandDto);
+        }
+        return listBrands;
     }
 }
