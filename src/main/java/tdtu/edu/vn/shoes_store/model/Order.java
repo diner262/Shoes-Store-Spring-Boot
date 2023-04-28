@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,16 +20,20 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String date;
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
     private String status;
 
     private String payment;
 
-    private double totalprice;
+    private double totalPrice;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetail = new ArrayList<>();
 
 }
