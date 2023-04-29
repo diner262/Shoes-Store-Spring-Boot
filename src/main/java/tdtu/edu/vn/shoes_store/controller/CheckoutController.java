@@ -54,7 +54,7 @@ public class CheckoutController {
         order.setTotalPrice(checkout.getTotalPrice());
         order.setOrderDetail(new ArrayList<>());
 
-        orderRepository.save(order);
+
 
         for(DetailCheckout orderDetail: checkout.getDetailCheckout()){
             Product product = productService.getProductById(orderDetail.getProductId());
@@ -69,6 +69,7 @@ public class CheckoutController {
             order.getOrderDetail().add(newOrderDetail1);
             orderDetailRepository.save(newOrderDetail1);
         }
+        orderRepository.save(order);
         result.put("message", "Order created successfully");
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

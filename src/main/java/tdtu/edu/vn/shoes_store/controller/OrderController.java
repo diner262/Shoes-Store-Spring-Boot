@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tdtu.edu.vn.shoes_store.dto.OrderDto;
+import tdtu.edu.vn.shoes_store.dto.UserDto;
 import tdtu.edu.vn.shoes_store.model.*;
 import tdtu.edu.vn.shoes_store.repository.OrderDetailRepository;
 import tdtu.edu.vn.shoes_store.repository.OrderRepository;
@@ -36,14 +38,12 @@ public class OrderController {
     private ProductService productService;
 
     @GetMapping("")
-    public ResponseEntity<?> getAllOrders(){
-        Map<String, Object> result = new HashMap<>();
-
-        List<Order> orderList = orderService.getAllOrders();
-        result.put("statusCode", HttpStatus.OK.value());
-        result.put("message", "Create new user successfully!");
-        result.put("content", orderList);
-        return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+    public ResponseEntity< List<OrderDto>> getAllOrders(){
+        List<OrderDto> orderDtos = orderService.getAllOrders();
+        if(orderDtos != null){
+            return  ResponseEntity.ok(orderDtos);
+        }
+        return  ResponseEntity.notFound().build();
     }
 
 

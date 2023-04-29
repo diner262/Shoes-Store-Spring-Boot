@@ -23,14 +23,21 @@ public class Order {
     @Temporal(TemporalType.DATE)
     private Date date;
 
+    @Column(name = "status")
     private String status;
 
+
+    @Column(name = "payment")
     private String payment;
 
+
+    @Column(name = "email",nullable = false, unique = true)
     private String email;
 
+    @Column(name = "address",nullable = false)
     private String address;
 
+    @Column(name = "total_price",nullable = false)
     private double totalPrice;
 
     @OneToMany(cascade = CascadeType.ALL)

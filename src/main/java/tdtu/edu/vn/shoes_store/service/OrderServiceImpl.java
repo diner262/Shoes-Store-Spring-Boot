@@ -2,38 +2,59 @@ package tdtu.edu.vn.shoes_store.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Transient;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tdtu.edu.vn.shoes_store.dto.OrderDto;
 import tdtu.edu.vn.shoes_store.model.Order;
 import tdtu.edu.vn.shoes_store.repository.OrderRepository;
-import tdtu.edu.vn.shoes_store.repository.RoleRepository;
-import tdtu.edu.vn.shoes_store.repository.UserRepository;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transient
 public class OrderServiceImpl implements OrderService{
 
+<<<<<<< HEAD
     @Autowired
     OrderRepository orderRepository;
 
 
     @Override
     public void addOrder(Order order) {
+=======
+    private final OrderRepository orderRepository;
+>>>>>>> 6c82b16 (view All Orders admin)
 
+    @Autowired
+    public OrderServiceImpl(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
     }
 
     @Override
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public List<OrderDto> getAllOrders() {
+        List<Order> orders = orderRepository.findAll();
+        List<OrderDto> orderDtos = new ArrayList<>();
+        for (Order order : orders) {
+            OrderDto orderDto = new OrderDto();
+            orderDto.setId(order.getId());
+            orderDto.setPayment(order.getPayment());
+            orderDto.setDate(order.getDate());
+            orderDto.setEmail(order.getEmail());
+            orderDto.setOrderDetail(order.getOrderDetail());
+            orderDto.setStatus(order.getStatus());
+            orderDto.setTotalPrice(order.getTotalPrice());
+            orderDtos.add(orderDto);
 
+        }
+        return orderDtos;
     }
 
+<<<<<<< HEAD
     @Override
     public List<Order> findOrderByEmail(String email) {
         return orderRepository.findAll().stream()
                 .filter(order -> order.getEmail().equals(email)).toList();
     }
+=======
+>>>>>>> 6c82b16 (view All Orders admin)
 }
