@@ -20,16 +20,16 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @Temporal(TemporalType.DATE)
     private Date date;
 
     private String status;
 
     private String payment;
+
+    private String email;
+
+    private String address;
 
     private double totalPrice;
 

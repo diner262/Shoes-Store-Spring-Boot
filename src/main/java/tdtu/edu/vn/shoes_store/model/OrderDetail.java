@@ -12,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "orders_detail")
 public class OrderDetail {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,7 +21,7 @@ public class OrderDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private  int size;
+    private int size;
     private int quantity;
     private double price;
 

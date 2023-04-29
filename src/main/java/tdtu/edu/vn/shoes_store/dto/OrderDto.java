@@ -16,25 +16,27 @@ import java.util.List;
 public class OrderDto {
     private Long id;
 
-    private User user;
 
     private Date date;
 
     private String status;
 
     private String payment;
+    private String email;
+    private String address;
 
     private double totalPrice;
 
     private List<OrderDetail> orderDetail = new ArrayList<>();
 
     @Builder
-    public OrderDto(Long id, User user, Date date, String status, String payment, double totalPrice, List<OrderDetail> orderDetail) {
+    public OrderDto(Long id,  Date date, String status, String payment,String email,String address, double totalPrice, List<OrderDetail> orderDetail) {
         this.id = id;
-        this.user = user;
         this.date = date;
         this.status = status;
         this.payment = payment;
+        this.email = email;
+        this.address = address;
         this.totalPrice = totalPrice;
         this.orderDetail = orderDetail;
     }

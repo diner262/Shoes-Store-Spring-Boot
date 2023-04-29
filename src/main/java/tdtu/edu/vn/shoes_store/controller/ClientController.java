@@ -17,6 +17,7 @@ import tdtu.edu.vn.shoes_store.service.CategoriesService;
 import tdtu.edu.vn.shoes_store.service.ProductService;
 import tdtu.edu.vn.shoes_store.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,8 +40,6 @@ public class ClientController {
 
     @Autowired
     private UserService userService;
-
-
 
 
     @Autowired
@@ -76,68 +75,43 @@ public class ClientController {
         return getListCategories(categoriesService.getAllCategories());
     }
 
-//    @PostMapping("/checkout")
-//    public ResponseEntity<?> checkOut(@RequestBody  Map<String, Object> checkoutData){
-//        Map<String, Object> result = new HashMap<>();
-//
-//        // Lấy thông tin user
-//        Long userId = Long.parseLong(checkoutData.get("user_id").toString());
-//        UserDto userDto = userService.findUserByID(userId);
-//
-//        // Tách các thông tin về sản phẩm, kích cỡ, số lượng và giá thành từ chuỗi JSON truyền vào
-//        String productIdsString = checkoutData.get("product_id").toString();
-//        List<Long> productIds = Arrays.stream(productIdsString.split(","))
-//                .map(Long::parseLong)
-//                .collect(Collections.toList());
-//
-//        String quantityString = checkoutData.get("quantity").toString();
-//        List<Integer> quantities = Arrays.stream(quantityString.split(","))
-//                .map(Integer::parseInt)
-//                .collect(Collectors.toList());
-//
-//        String sizeString = checkoutData.get("size").toString();
-//        List<List<Integer>> sizes = new ArrayList<>();
-//        Pattern pattern = Pattern.compile("\\[(.*?)\\]");
-//        Matcher matcher = pattern.matcher(sizeString);
-//        while (matcher.find()) {
-//            String[] sizeArray = matcher.group(1).split(",");
-//            List<Integer> sizeList = Arrays.stream(sizeArray)
-//                    .map(Integer::parseInt)
-//                    .collect(Collectors.toList());
-//            sizes.add(sizeList);
-//        }
-//
-//        String priceString = checkoutData.get("price").toString();
-//        List<Double> prices = Arrays.stream(priceString.split(","))
-//                .map(Double::parseDouble)
-//                .collect(Collectors.toList());
-//
-//        // Tạo đối tượng Order và các đối tượng OrderDetail tương ứng
-//        Order order = new Order();
-//        order.setUser(userDto.toEntity());
-//        order.setDate(new Date());
-//        order.setStatus("Pending");
-//        order.setPayment(checkoutData.get("payment").toString());
-//        order.setTotalPrice(Double.parseDouble(checkoutData.get("totalPrice").toString()));
-//
-//        List<OrderDetail> orderDetails = new ArrayList<>();
-//        for (int i = 0; i < productIds.size(); i++) {
-//            OrderDetail orderDetail = new OrderDetail();
-//            orderDetail.setProduct(productService.getProductById(productIds.get(i)));
-//            orderDetail.setSize(sizes.get(i));
-//            orderDetail.setQuantity(quantities.get(i));
-//            orderDetail.setPrice(prices.get(i));
-//            orderDetails.add(orderDetail);
-//        }
-//
-//        order.setOrderDetail(orderDetails);
-//
-//        // Lưu đối tượng Order và OrderDetail vào database
-//        orderRepository.save(order);
-//
-//        result.put("message", "Checkout successfully!");
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
+    @PostMapping("/checkout")
+    public ResponseEntity<?> checkOut(@RequestBody Checkout checkout , HttpServletRequest request){
+        String token = request.getHeader("Authorization").substring(7);
+        Map<String, Object> result = new HashMap<>();
+        UserDto userDto = userService.findUserByToken(token);
+
+
+        Order order = new Order();
+
+        order.setDate(new Date());
+        order.setStatus("PENDING");
+        order.setPayment(checkout.getPayment());
+        order.setEmail(token);
+        order.setAddress(checkout.getAddress());
+        order.setTotalPrice(checkout.getTotalPrice());
+        order.setOrderDetail(new ArrayList<>());
+
+        orderRepository.save(order);
+
+
+        for(DetailCheckout orderDetail: checkout.getDetailCheckout()){
+
+            Product product = productService.getProductById(orderDetail.getProductId());
+
+            OrderDetail newOrderDetail1 = new OrderDetail();
+
+            newOrderDetail1.setProduct(product);
+            newOrderDetail1.setSize(orderDetail.getSize());
+            newOrderDetail1.setQuantity(orderDetail.getQuantity());
+            newOrderDetail1.setPrice(orderDetail.getQuantity() * product.getPrice());
+
+            orderDetailRepository.save(newOrderDetail1);
+            order.getOrderDetail().add(newOrderDetail1);
+        }
+        result.put("message", "Order created successfully");
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
     private ProductDto getProductDtoBody(Product product) {
         ProductDto productDto = new ProductDto();
