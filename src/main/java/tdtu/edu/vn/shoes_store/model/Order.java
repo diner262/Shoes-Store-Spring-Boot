@@ -40,6 +40,8 @@ public class Order {
     @Column(name = "total_price",nullable = false)
     private double totalPrice;
 
+    @Column(name = "delivery",nullable = false)
+    private String delivery;
     @OneToMany(cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetail = new ArrayList<>();
 

@@ -36,6 +36,7 @@ public class OrderServiceImpl implements OrderService{
             orderDto.setStatus(order.getStatus());
             orderDto.setAddress(order.getAddress());
             orderDto.setTotalPrice(order.getTotalPrice());
+            orderDto.setDelivery(order.getDelivery());
             orderDtos.add(orderDto);
 
         }

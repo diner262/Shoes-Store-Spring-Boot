@@ -9,12 +9,22 @@ public class Checkout {
 
     private String address;
 
+    private String delivery;
 
-    public Checkout(String payment, double totalPrice, List<DetailCheckout> detailCheckout, String address) {
+    public Checkout(String payment, double totalPrice, List<DetailCheckout> detailCheckout, String address,String delivery) {
         this.payment = payment;
         this.totalPrice = totalPrice;
         this.detailCheckout = detailCheckout;
         this.address = address;
+        this.delivery = delivery;
+    }
+
+    public String getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(String delivery) {
+        this.delivery = delivery;
     }
 
     public List<DetailCheckout> getDetailCheckout() {

@@ -53,6 +53,7 @@ public class CheckoutController {
         order.setAddress(checkout.getAddress());
         order.setTotalPrice(checkout.getTotalPrice());
         order.setOrderDetail(new ArrayList<>());
+        order.setDelivery(checkout.getDelivery());
 
 
 
