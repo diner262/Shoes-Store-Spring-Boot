@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tdtu.edu.vn.shoes_store.model.OrderDetail;
-import tdtu.edu.vn.shoes_store.model.User;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +23,8 @@ public class OrderDto {
     private String address;
 
     private double totalPrice;
+
+    private List<ProductOrderDto> products = new ArrayList<>();
 
 //    private List<OrderDetail> orderDetail = new ArrayList<>();
 

@@ -11,8 +11,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import tdtu.edu.vn.shoes_store.dto.OrderDto;
 import tdtu.edu.vn.shoes_store.dto.ProductDto;
+import tdtu.edu.vn.shoes_store.dto.ProductOrderDto;
 import tdtu.edu.vn.shoes_store.dto.UserDto;
 import tdtu.edu.vn.shoes_store.model.Order;
+import tdtu.edu.vn.shoes_store.model.OrderDetail;
 import tdtu.edu.vn.shoes_store.model.Product;
 import tdtu.edu.vn.shoes_store.model.User;
 import tdtu.edu.vn.shoes_store.security.TokenStore;
@@ -215,6 +217,22 @@ public class AuthorizationController {
         if (order.getStatus() != null) orderDto.setStatus(order.getStatus());
         orderDto.setTotalPrice(order.getTotalPrice());
 
+        List<ProductOrderDto> productDtoList = orderDto.getProducts();
+
+        for (OrderDetail orderDetail : order.getOrderDetail()) {
+            ProductOrderDto productOrders = new ProductOrderDto();
+
+            productOrders.setName(orderDetail.getProduct().getName());
+            productOrders.setDescription(orderDetail.getProduct().getDescription());
+            productOrders.setImage(orderDetail.getProduct().getImage());
+            productOrders.setSize(orderDetail.getSize());
+            productOrders.setQuantity(orderDetail.getQuantity());
+            productOrders.setPrice(orderDetail.getProduct().getPrice());
+
+            productDtoList.add(productOrders);
+        }
+
+        orderDto.setProducts(productDtoList);
         return orderDto;
     }
 
