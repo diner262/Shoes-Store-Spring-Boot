@@ -11,4 +11,6 @@ public interface OrderService {
     void addOrder(Order order);
 
     List<Order> getAllOrders();
+
+    List<Order> findOrderByEmail(String email);
 }

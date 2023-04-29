@@ -16,7 +16,6 @@ import java.util.List;
 public class OrderDto {
     private Long id;
 
-
     private Date date;
 
     private String status;
@@ -27,10 +26,10 @@ public class OrderDto {
 
     private double totalPrice;
 
-    private List<OrderDetail> orderDetail = new ArrayList<>();
+//    private List<OrderDetail> orderDetail = new ArrayList<>();
 
     @Builder
-    public OrderDto(Long id,  Date date, String status, String payment,String email,String address, double totalPrice, List<OrderDetail> orderDetail) {
+    public OrderDto(Long id,  Date date, String status, String payment,String email,String address, double totalPrice) {
         this.id = id;
         this.date = date;
         this.status = status;
@@ -38,6 +37,6 @@ public class OrderDto {
         this.email = email;
         this.address = address;
         this.totalPrice = totalPrice;
-        this.orderDetail = orderDetail;
+//        this.orderDetail = orderDetail;
     }
 }

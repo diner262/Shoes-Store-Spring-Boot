@@ -1,5 +1,6 @@
 package tdtu.edu.vn.shoes_store.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Transient;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.List;
 @Transient
 public class OrderServiceImpl implements OrderService{
 
+    @Autowired
     OrderRepository orderRepository;
 
 
@@ -27,5 +29,11 @@ public class OrderServiceImpl implements OrderService{
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
 
+    }
+
+    @Override
+    public List<Order> findOrderByEmail(String email) {
+        return orderRepository.findAll().stream()
+                .filter(order -> order.getEmail().equals(email)).toList();
     }
 }
