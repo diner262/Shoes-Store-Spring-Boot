@@ -106,8 +106,9 @@ public class ClientController {
             newOrderDetail1.setQuantity(orderDetail.getQuantity());
             newOrderDetail1.setPrice(orderDetail.getQuantity() * product.getPrice());
 
-            orderDetailRepository.save(newOrderDetail1);
+
             order.getOrderDetail().add(newOrderDetail1);
+            orderDetailRepository.save(newOrderDetail1);
         }
         result.put("message", "Order created successfully");
         return new ResponseEntity<>(result, HttpStatus.OK);
