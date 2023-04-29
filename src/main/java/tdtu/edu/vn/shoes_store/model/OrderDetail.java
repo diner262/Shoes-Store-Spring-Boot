@@ -20,7 +20,7 @@ public class OrderDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private  int size;
+    private int size;
     private int quantity;
     private double price;
 
