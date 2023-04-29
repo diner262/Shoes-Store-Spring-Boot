@@ -81,7 +81,7 @@ public class AuthorizationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
+    public ResponseEntity<Object> login(@RequestBody JwtRequest authenticationRequest)
             throws Exception {
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> content = new HashMap<>();
@@ -96,6 +96,44 @@ public class AuthorizationController {
             authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
             final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
             final String token = jwtTokenUtil.generateToken(userDetails);
+            tokenStore.storeToken(token);
+
+            content.put("email", userDetails.getUsername());
+            content.put("accessToken", token);
+
+            result.put("statusCode", HttpStatus.OK.value());
+            result.put("timeStamp", LocalTime.now());
+            result.put("message", "Login successfully!");
+            result.put("content", content);
+        } catch (Exception e) {
+            result.put("statusCode", HttpStatus.UNAUTHORIZED.value());
+            result.put("timeStamp", LocalTime.now());
+            result.put("message", e.getMessage());
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PostMapping("/admin/login")
+    public ResponseEntity<Object> loginAdmin(@RequestBody JwtRequest authenticationRequest)
+            throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> content = new HashMap<>();
+
+        if (authenticationRequest.getEmail() == null) {
+            return new ResponseEntity<>("Email is required!", HttpStatus.BAD_REQUEST);
+        } else if (authenticationRequest.getPassword() == null) {
+            return new ResponseEntity<>("Password is required!", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
+            final String token = jwtTokenUtil.generateToken(userDetails);
+            if (userDetails.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+                throw new Exception("You are not an admin!");
+            }
+
             tokenStore.storeToken(token);
 
             content.put("email", userDetails.getUsername());
