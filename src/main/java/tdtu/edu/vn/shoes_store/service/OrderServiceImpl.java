@@ -14,16 +14,14 @@ import java.util.List;
 @Transient
 public class OrderServiceImpl implements OrderService{
 
-<<<<<<< HEAD
-    @Autowired
-    OrderRepository orderRepository;
+
 
 
     @Override
     public void addOrder(Order order) {
-=======
+
+    }
     private final OrderRepository orderRepository;
->>>>>>> 6c82b16 (view All Orders admin)
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository) {
@@ -40,7 +38,7 @@ public class OrderServiceImpl implements OrderService{
             orderDto.setPayment(order.getPayment());
             orderDto.setDate(order.getDate());
             orderDto.setEmail(order.getEmail());
-            orderDto.setOrderDetail(order.getOrderDetail());
+
             orderDto.setStatus(order.getStatus());
             orderDto.setTotalPrice(order.getTotalPrice());
             orderDtos.add(orderDto);
@@ -49,12 +47,10 @@ public class OrderServiceImpl implements OrderService{
         return orderDtos;
     }
 
-<<<<<<< HEAD
-    @Override
+   @Override
     public List<Order> findOrderByEmail(String email) {
         return orderRepository.findAll().stream()
                 .filter(order -> order.getEmail().equals(email)).toList();
     }
-=======
->>>>>>> 6c82b16 (view All Orders admin)
+
 }
