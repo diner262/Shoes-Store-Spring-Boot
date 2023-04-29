@@ -131,7 +131,7 @@ public class AuthorizationController {
             final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
             final String token = jwtTokenUtil.generateToken(userDetails);
             if (userDetails.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-                throw new Exception("You are not an admin!");
+                throw new Exception("You are not allowed to login!");
             }
 
             tokenStore.storeToken(token);
