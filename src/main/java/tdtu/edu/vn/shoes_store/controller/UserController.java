@@ -9,6 +9,7 @@ import tdtu.edu.vn.shoes_store.dto.UserDto;
 import tdtu.edu.vn.shoes_store.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,15 +30,21 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<UserDto> getUserByToken(HttpServletRequest request) {
+    public ResponseEntity<?> getUserByToken(HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
         String token = request.getHeader("Authorization").substring(7);
-        System.out.println(token);
 
         UserDto userDto = userService.findUserByToken(token);
         if (userDto == null) {
-            return ResponseEntity.notFound().build();
+            result.put("statusCode", HttpStatus.NOT_FOUND.value());
+            result.put("timeStamp", LocalTime.now());
+            result.put("message", "User not found!");
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(userDto);
+        else {
+            return ResponseEntity.ok(userDto);
+        }
+
     }
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserByID(@PathVariable(name = "id") Long id) {
@@ -115,8 +122,10 @@ public class UserController {
             result.put("content",updatedUser);
             return  new ResponseEntity<>(result, HttpStatus.OK);
         } else {
-
-            return ResponseEntity.notFound().build();
+            result.put("statusCode", HttpStatus.NOT_FOUND.value());
+            result.put("timeStamp", LocalTime.now());
+            result.put("message", "User not found!");
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -12,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "orders_detail")
 public class OrderDetail {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

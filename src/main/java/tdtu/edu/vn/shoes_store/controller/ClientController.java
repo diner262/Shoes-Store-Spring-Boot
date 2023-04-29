@@ -1,6 +1,5 @@
 package tdtu.edu.vn.shoes_store.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,19 +7,17 @@ import org.springframework.web.bind.annotation.*;
 import tdtu.edu.vn.shoes_store.dto.BrandsDto;
 import tdtu.edu.vn.shoes_store.dto.CategoriesDto;
 import tdtu.edu.vn.shoes_store.dto.ProductDto;
-import tdtu.edu.vn.shoes_store.dto.UserDto;
 import tdtu.edu.vn.shoes_store.model.*;
 import tdtu.edu.vn.shoes_store.repository.OrderDetailRepository;
 import tdtu.edu.vn.shoes_store.repository.OrderRepository;
+import tdtu.edu.vn.shoes_store.security.jwt.JwtTokenUtil;
 import tdtu.edu.vn.shoes_store.service.BrandsService;
 import tdtu.edu.vn.shoes_store.service.CategoriesService;
 import tdtu.edu.vn.shoes_store.service.ProductService;
 import tdtu.edu.vn.shoes_store.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/client")
@@ -40,7 +37,8 @@ public class ClientController {
     @Autowired
     private UserService userService;
 
-
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
 
     @Autowired
@@ -75,69 +73,6 @@ public class ClientController {
     public List<CategoriesDto> getAllCategories() {
         return getListCategories(categoriesService.getAllCategories());
     }
-
-//    @PostMapping("/checkout")
-//    public ResponseEntity<?> checkOut(@RequestBody  Map<String, Object> checkoutData){
-//        Map<String, Object> result = new HashMap<>();
-//
-//        // Lấy thông tin user
-//        Long userId = Long.parseLong(checkoutData.get("user_id").toString());
-//        UserDto userDto = userService.findUserByID(userId);
-//
-//        // Tách các thông tin về sản phẩm, kích cỡ, số lượng và giá thành từ chuỗi JSON truyền vào
-//        String productIdsString = checkoutData.get("product_id").toString();
-//        List<Long> productIds = Arrays.stream(productIdsString.split(","))
-//                .map(Long::parseLong)
-//                .collect(Collections.toList());
-//
-//        String quantityString = checkoutData.get("quantity").toString();
-//        List<Integer> quantities = Arrays.stream(quantityString.split(","))
-//                .map(Integer::parseInt)
-//                .collect(Collectors.toList());
-//
-//        String sizeString = checkoutData.get("size").toString();
-//        List<List<Integer>> sizes = new ArrayList<>();
-//        Pattern pattern = Pattern.compile("\\[(.*?)\\]");
-//        Matcher matcher = pattern.matcher(sizeString);
-//        while (matcher.find()) {
-//            String[] sizeArray = matcher.group(1).split(",");
-//            List<Integer> sizeList = Arrays.stream(sizeArray)
-//                    .map(Integer::parseInt)
-//                    .collect(Collectors.toList());
-//            sizes.add(sizeList);
-//        }
-//
-//        String priceString = checkoutData.get("price").toString();
-//        List<Double> prices = Arrays.stream(priceString.split(","))
-//                .map(Double::parseDouble)
-//                .collect(Collectors.toList());
-//
-//        // Tạo đối tượng Order và các đối tượng OrderDetail tương ứng
-//        Order order = new Order();
-//        order.setUser(userDto.toEntity());
-//        order.setDate(new Date());
-//        order.setStatus("Pending");
-//        order.setPayment(checkoutData.get("payment").toString());
-//        order.setTotalPrice(Double.parseDouble(checkoutData.get("totalPrice").toString()));
-//
-//        List<OrderDetail> orderDetails = new ArrayList<>();
-//        for (int i = 0; i < productIds.size(); i++) {
-//            OrderDetail orderDetail = new OrderDetail();
-//            orderDetail.setProduct(productService.getProductById(productIds.get(i)));
-//            orderDetail.setSize(sizes.get(i));
-//            orderDetail.setQuantity(quantities.get(i));
-//            orderDetail.setPrice(prices.get(i));
-//            orderDetails.add(orderDetail);
-//        }
-//
-//        order.setOrderDetail(orderDetails);
-//
-//        // Lưu đối tượng Order và OrderDetail vào database
-//        orderRepository.save(order);
-//
-//        result.put("message", "Checkout successfully!");
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
 
     private ProductDto getProductDtoBody(Product product) {
         ProductDto productDto = new ProductDto();

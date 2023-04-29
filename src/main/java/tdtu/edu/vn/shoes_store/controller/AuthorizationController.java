@@ -9,16 +9,23 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import tdtu.edu.vn.shoes_store.dto.OrderDto;
+import tdtu.edu.vn.shoes_store.dto.ProductDto;
 import tdtu.edu.vn.shoes_store.dto.UserDto;
+import tdtu.edu.vn.shoes_store.model.Order;
+import tdtu.edu.vn.shoes_store.model.Product;
 import tdtu.edu.vn.shoes_store.model.User;
 import tdtu.edu.vn.shoes_store.security.TokenStore;
 import tdtu.edu.vn.shoes_store.security.jwt.JwtRequest;
 import tdtu.edu.vn.shoes_store.security.jwt.JwtTokenUtil;
+import tdtu.edu.vn.shoes_store.service.OrderService;
 import tdtu.edu.vn.shoes_store.service.UserDetailsServiceImpl;
 import tdtu.edu.vn.shoes_store.service.UserService;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -34,6 +41,9 @@ public class AuthorizationController {
     private UserDetailsServiceImpl userDetailsService;
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrderService orderService;
 
     @PostMapping("/signup")
     public ResponseEntity<Object> signup(@RequestBody UserDto userDto) {
@@ -124,7 +134,8 @@ public class AuthorizationController {
 
         User user = userService.findUserByEmail(email);
         if (user != null) {
-            UserDto userDto = getUserDtoBody(user);
+            List<Order> orderList = orderService.findOrderByEmail(email);
+            UserDto userDto = getUserDtoBody(user, orderList);
             result.put("statusCode", HttpStatus.OK.value());
             result.put("timeStamp", LocalTime.now());
             result.put("message", "Get profile successfully!");
@@ -138,9 +149,10 @@ public class AuthorizationController {
         }
     }
 
-    private UserDto getUserDtoBody(User user) {
+    private UserDto getUserDtoBody(User user, List<Order> orderList) {
         UserDto userDto = new UserDto();
 
+        if (user.getId() != null) userDto.setId(user.getId());
         if (user.getEmail() != null) userDto.setEmail(user.getEmail());
         if (user.getUsername() != null) userDto.setUsername(user.getUsername());
         if (user.getGender() != null) userDto.setGender(user.getGender());
@@ -149,6 +161,32 @@ public class AuthorizationController {
         if (user.getAge() != null) userDto.setAge(user.getAge());
         if (user.getPassword() != null) userDto.setPassword(user.getPassword());
 
+        userDto.setOrders(getListOrder(orderList));
+
         return userDto;
+    }
+
+    private OrderDto getOrderDtoBody(Order order) {
+        OrderDto orderDto = new OrderDto();
+
+        if (order.getId() != null) orderDto.setId(order.getId());
+        if (order.getEmail() != null) orderDto.setEmail(order.getEmail());
+        if (order.getAddress() != null) orderDto.setAddress(order.getAddress());
+        if (order.getDate() != null) orderDto.setDate(order.getDate());
+        if (order.getPayment() != null) orderDto.setPayment(order.getPayment());
+        if (order.getStatus() != null) orderDto.setStatus(order.getStatus());
+        orderDto.setTotalPrice(order.getTotalPrice());
+
+        return orderDto;
+    }
+
+
+    private List<OrderDto> getListOrder(List<Order> orders) {
+        List<OrderDto> listOrder = new ArrayList<>();
+        for (Order order : orders) {
+            OrderDto orderDto = getOrderDtoBody(order);
+            listOrder.add(orderDto);
+        }
+        return listOrder;
     }
 }

@@ -4,7 +4,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tdtu.edu.vn.shoes_store.model.Role;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -21,6 +23,8 @@ public class UserDto {
     private Integer age;
     private String address;
     private Long role;
+
+    private List<OrderDto> orders = new ArrayList<>();
 
     @Builder
     public UserDto(Long id, String address, int age,String username, String password, String email, String gender, String phone, Long role) {

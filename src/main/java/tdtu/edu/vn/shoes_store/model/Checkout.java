@@ -1,24 +1,28 @@
 package tdtu.edu.vn.shoes_store.model;
 
+import java.util.List;
+
 public class Checkout {
-    private Long user_id;
     private String payment;
     private double totalPrice;
+    private List<DetailCheckout> detailCheckout;
 
-    private Long[] product_id;
+    private String address;
 
-    private int[] quantity;
 
-    private int[] size;
-
-    private double[] price;
-
-    public Long getUser_id() {
-        return user_id;
+    public Checkout(String payment, double totalPrice, List<DetailCheckout> detailCheckout, String address) {
+        this.payment = payment;
+        this.totalPrice = totalPrice;
+        this.detailCheckout = detailCheckout;
+        this.address = address;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public List<DetailCheckout> getDetailCheckout() {
+        return detailCheckout;
+    }
+
+    public void setDetailCheckout(List<DetailCheckout> detailCheckout) {
+        this.detailCheckout = detailCheckout;
     }
 
     public String getPayment() {
@@ -37,45 +41,17 @@ public class Checkout {
         this.totalPrice = totalPrice;
     }
 
-    public Long[] getProduct_id() {
-        return product_id;
+
+    public void setOrderDetail(List<DetailCheckout> detailCheckout) {
+        this.detailCheckout = detailCheckout;
     }
 
-    public void setProduct_id(Long[] product_id) {
-        this.product_id = product_id;
+    public String getAddress() {
+        return address;
     }
 
-    public int[] getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int[] quantity) {
-        this.quantity = quantity;
-    }
-
-    public int[] getSize() {
-        return size;
-    }
-
-    public void setSize(int[] size) {
-        this.size = size;
-    }
-
-    public double[] getPrice() {
-        return price;
-    }
-
-    public void setPrice(double[] price) {
-        this.price = price;
-    }
-
-    public Checkout(Long user_id, String payment, double totalPrice, Long[] product_id, int[] quantity, int[] size, double[] price) {
-        this.user_id = user_id;
-        this.payment = payment;
-        this.totalPrice = totalPrice;
-        this.product_id = product_id;
-        this.quantity = quantity;
-        this.size = size;
-        this.price = price;
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
+
