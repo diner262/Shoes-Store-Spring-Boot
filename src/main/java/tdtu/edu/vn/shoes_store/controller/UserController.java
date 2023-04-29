@@ -33,7 +33,6 @@ public class UserController {
     public ResponseEntity<?> getUserByToken(HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         String token = request.getHeader("Authorization").substring(7);
-//        System.out.println(token);
 
         UserDto userDto = userService.findUserByToken(token);
         if (userDto == null) {

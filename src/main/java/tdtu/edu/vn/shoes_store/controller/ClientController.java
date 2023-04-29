@@ -12,6 +12,7 @@ import tdtu.edu.vn.shoes_store.dto.UserDto;
 import tdtu.edu.vn.shoes_store.model.*;
 import tdtu.edu.vn.shoes_store.repository.OrderDetailRepository;
 import tdtu.edu.vn.shoes_store.repository.OrderRepository;
+import tdtu.edu.vn.shoes_store.security.jwt.JwtTokenUtil;
 import tdtu.edu.vn.shoes_store.service.BrandsService;
 import tdtu.edu.vn.shoes_store.service.CategoriesService;
 import tdtu.edu.vn.shoes_store.service.ProductService;
@@ -40,6 +41,9 @@ public class ClientController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
 
     @Autowired
@@ -75,30 +79,26 @@ public class ClientController {
         return getListCategories(categoriesService.getAllCategories());
     }
 
+
     @PostMapping("/checkout")
     public ResponseEntity<?> checkOut(@RequestBody Checkout checkout , HttpServletRequest request){
         String token = request.getHeader("Authorization").substring(7);
         Map<String, Object> result = new HashMap<>();
-        UserDto userDto = userService.findUserByToken(token);
-
-
+        String email = jwtTokenUtil.getUsernameFromToken(token);
         Order order = new Order();
 
         order.setDate(new Date());
         order.setStatus("PENDING");
         order.setPayment(checkout.getPayment());
-        order.setEmail(token);
+        order.setEmail(email);
         order.setAddress(checkout.getAddress());
         order.setTotalPrice(checkout.getTotalPrice());
         order.setOrderDetail(new ArrayList<>());
 
         orderRepository.save(order);
 
-
         for(DetailCheckout orderDetail: checkout.getDetailCheckout()){
-
             Product product = productService.getProductById(orderDetail.getProductId());
-
             OrderDetail newOrderDetail1 = new OrderDetail();
 
             newOrderDetail1.setProduct(product);
@@ -112,6 +112,7 @@ public class ClientController {
         result.put("message", "Order created successfully");
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
 
     private ProductDto getProductDtoBody(Product product) {
         ProductDto productDto = new ProductDto();
