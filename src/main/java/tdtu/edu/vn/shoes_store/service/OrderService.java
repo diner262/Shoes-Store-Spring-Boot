@@ -9,9 +9,10 @@ import java.util.List;
 @Service
 public interface OrderService {
 
-    void addOrder(Order order);
 
 
     List<Order> findOrderByEmail(String email);
     List<OrderDto> getAllOrders();
+
+    void deleteOrder(Long id);
 }

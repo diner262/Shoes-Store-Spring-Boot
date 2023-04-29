@@ -15,12 +15,6 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService{
 
 
-
-
-    @Override
-    public void addOrder(Order order) {
-
-    }
     private final OrderRepository orderRepository;
 
     @Autowired
@@ -38,8 +32,9 @@ public class OrderServiceImpl implements OrderService{
             orderDto.setPayment(order.getPayment());
             orderDto.setDate(order.getDate());
             orderDto.setEmail(order.getEmail());
-
+//            orderDto.setOrderDetail(order.getOrderDetail());
             orderDto.setStatus(order.getStatus());
+            orderDto.setAddress(order.getAddress());
             orderDto.setTotalPrice(order.getTotalPrice());
             orderDtos.add(orderDto);
 
@@ -47,7 +42,13 @@ public class OrderServiceImpl implements OrderService{
         return orderDtos;
     }
 
-   @Override
+    @Override
+    public void deleteOrder(Long id) {
+        orderRepository.deleteById(id);
+    }
+
+
+    @Override
     public List<Order> findOrderByEmail(String email) {
         return orderRepository.findAll().stream()
                 .filter(order -> order.getEmail().equals(email)).toList();

@@ -46,6 +46,21 @@ public class OrderController {
         return  ResponseEntity.notFound().build();
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteOrderByID(@PathVariable(name = "id") Long id){
+        Map<String, Object> result = new HashMap<>();
+        Optional<Order> order = orderRepository.findById(id);
+        if(order.isPresent()) {
+            orderService.deleteOrder(id);
+            result.put("statusCode", HttpStatus.OK.value());
+            result.put("message", "Delete Order successfully!");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else  {
+            result.put("statusCode", HttpStatus.NOT_FOUND.value());
+            result.put("message", "Order not found!");
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 }
