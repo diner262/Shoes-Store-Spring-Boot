@@ -33,6 +33,7 @@ public class OrderServiceImpl implements OrderService{
             orderDto.setDate(order.getDate());
             orderDto.setEmail(order.getEmail());
 //            orderDto.setOrderDetail(order.getOrderDetail());
+
             orderDto.setStatus(order.getStatus());
             orderDto.setAddress(order.getAddress());
             orderDto.setTotalPrice(order.getTotalPrice());

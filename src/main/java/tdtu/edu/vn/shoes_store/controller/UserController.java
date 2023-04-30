@@ -113,7 +113,8 @@ public class UserController {
     @PutMapping("/profile")
     public ResponseEntity<?> updateUserByToken(HttpServletRequest request, @RequestBody UserDto userDto) {
         String token = request.getHeader("Authorization").substring(7);
-        UserDto updatedUser = userService.updateUserByToken(token, userDto);
+
+        UserDto updatedUser = userService.updateUserByToken(token, userDto,userDto.getPasswordConfirm());
         Map<String, Object> result = new HashMap<>();
         if (updatedUser != null) {
             result.put("statusCode", HttpStatus.OK.value());
@@ -123,7 +124,7 @@ public class UserController {
         } else {
             result.put("statusCode", HttpStatus.NOT_FOUND.value());
             result.put("timeStamp", LocalTime.now());
-            result.put("message", "User not found!");
+            result.put("message", "User not found or Wrong password Confirm!");
             return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
         }
     }

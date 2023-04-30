@@ -113,35 +113,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUserByToken(String token, UserDto userDto) {
+    public UserDto updateUserByToken(String token, UserDto userDto,String passwordConfirm) {
         String username = jwtTokenUtil.getUsernameFromToken(token);
 //        System.out.print("username ne:"+username);
         Optional<User> optionalUser = userRepository.findUsersByEmail(username);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            user.setAddress(userDto.getAddress());
-            user.setAge(userDto.getAge());
-            user.setEmail(userDto.getEmail());
-            user.setGender(userDto.getGender());
+            if(passwordEncoder.matches(passwordConfirm, user.getPassword())) {
+
+                user.setAddress(userDto.getAddress());
+                user.setAge(userDto.getAge());
+                user.setEmail(userDto.getEmail());
+                user.setGender(userDto.getGender());
 //            user.setPassword(userDto.getPassword());
-            user.setPhone(userDto.getPhone());
-//            Optional<Role> role = roleRepository.findById(userDto.getRole()); // tìm kiếm role trong cơ sở dữ liệu
-//            if (!role.isPresent()) { // nếu không tìm thấy role, trả về null
-//                return null;
-//            }
-//            user.setRole(role.get()); //
-            User updatedUser = userRepository.save(user);
-            UserDto updatedUserDto = new UserDto();
-            updatedUserDto.setId(updatedUser.getId());
-            updatedUserDto.setAddress(updatedUser.getAddress());
-            updatedUserDto.setAge(updatedUser.getAge());
-            updatedUserDto.setEmail(updatedUser.getEmail());
-            updatedUserDto.setGender(updatedUser.getGender());
-            updatedUserDto.setPassword(updatedUser.getPassword());
-            updatedUserDto.setPhone(updatedUser.getPhone());
-            updatedUserDto.setUsername(updatedUser.getUsername());
-            updatedUserDto.setRole(updatedUser.getRole().getId());
-            return updatedUserDto;
+                user.setPhone(userDto.getPhone());
+                User updatedUser = userRepository.save(user);
+
+                UserDto updatedUserDto = new UserDto();
+
+                updatedUserDto.setAddress(updatedUser.getAddress());
+                updatedUserDto.setAge(updatedUser.getAge());
+                updatedUserDto.setEmail(updatedUser.getEmail());
+                updatedUserDto.setGender(updatedUser.getGender());
+                updatedUserDto.setPhone(updatedUser.getPhone());
+                updatedUserDto.setUsername(updatedUser.getUsername());
+
+                return updatedUserDto;
+            }
+            else {
+                return null;
+            }
         }
         return null;
     }
@@ -209,7 +210,7 @@ public class UserServiceImpl implements UserService {
             userDto.setAge(user.get().getAge());
             userDto.setEmail(user.get().getEmail());
             userDto.setGender(user.get().getGender());
-            userDto.setPassword(user.get().getPassword());
+//            userDto.setPassword(user.get().getPassword());
             userDto.setPhone(user.get().getPhone());
             userDto.setUsername(user.get().getUsername());
             userDto.setRole(user.get().getRole().getId());

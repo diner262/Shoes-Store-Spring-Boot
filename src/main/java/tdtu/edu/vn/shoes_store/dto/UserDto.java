@@ -26,8 +26,9 @@ public class UserDto {
 
     private List<OrderDto> orders = new ArrayList<>();
 
+    private String passwordConfirm;
     @Builder
-    public UserDto(Long id, String address, int age,String username, String password, String email, String gender, String phone, Long role) {
+    public UserDto(Long id, String address, int age,String username, String password, String email, String gender, String phone, Long role,String passwordConfirm) {
         this.id = id;
         this.address = address;
         this.age = age;
@@ -37,5 +38,6 @@ public class UserDto {
         this.gender = gender;
         this.phone = phone;
         this.role = role;
+        this.passwordConfirm = passwordConfirm;
     }
 }

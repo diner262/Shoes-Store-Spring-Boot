@@ -12,7 +12,7 @@ public interface UserService {
     User findUserByEmail(String email);
     UserDto findUserByID(Long id);
     UserDto updateUserByID(Long id,UserDto userDto);
-    UserDto updateUserByToken(String token,UserDto userDto);
+    UserDto updateUserByToken(String token,UserDto userDto,String passwordConfirm);
     List<UserDto> getAllUser();
 
     UserDto addUser(UserDto userDto);
@@ -20,6 +20,7 @@ public interface UserService {
     boolean deleteUserByID(Long id);
 
     UserDto findUserByToken(String token);
+
 
 
 }
