@@ -88,6 +88,7 @@ public class UserServiceImpl implements UserService {
             user.setAddress(userDto.getAddress());
             user.setAge(userDto.getAge());
             user.setEmail(userDto.getEmail());
+            user.setUsername(userDto.getUsername());
             user.setGender(userDto.getGender());
 //            user.setPassword(userDto.getPassword());
             user.setPhone(userDto.getPhone());
@@ -125,6 +126,7 @@ public class UserServiceImpl implements UserService {
                 user.setAge(userDto.getAge());
                 user.setEmail(userDto.getEmail());
                 user.setGender(userDto.getGender());
+                user.setUsername(userDto.getUsername());
 //            user.setPassword(userDto.getPassword());
                 user.setPhone(userDto.getPhone());
                 User updatedUser = userRepository.save(user);
