@@ -121,6 +121,7 @@ public class ProductController {
     private ProductDto getProductDtoBody(Product product) {
         ProductDto productDto = new ProductDto();
 
+        if (product.getId() != null) productDto.setId(product.getId());
         if(product.getName() != null) productDto.setName(product.getName());
         if(product.getDescription() != null) productDto.setDescription(product.getDescription());
         if(product.getImage() != null) productDto.setImage(product.getImage());
