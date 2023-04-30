@@ -26,16 +26,6 @@ public class ShoesStoreApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-//		Role role = new Role();
-//		role.setName("ROLE_ADMIN");
-//
-//		User user = new User();
-//		user.setUsername("admin");
-//		user.setPassword(passwordEncoder.encode("123456"));
-//		user.setEmail("admin@gmail.com");
-//		user.setRole(role);
-//
-//		role.setUsers(Collections.singletonList(user));
-//		roleRepository.save(role);
+
 	}
 }

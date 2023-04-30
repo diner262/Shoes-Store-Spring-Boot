@@ -96,12 +96,6 @@ public class CheckoutController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-//    @PostMapping("/orders")
-//    public ResponseEntity<List<Order>> getAllOrdersByToken(HttpServletRequest request) {
-//        String token = request.getHeader("Authorization").substring(7);
-//        String email = jwtTokenUtil.getUsernameFromToken(token);
-//        List<Order> orderList = orderRepository.getAllByEmail(email);
-//        return ResponseEntity.ok(orderList);
-//    }
+
 
 }
