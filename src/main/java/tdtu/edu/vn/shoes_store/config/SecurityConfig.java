@@ -62,12 +62,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers("/api/auth/login","/api/auth/signup").permitAll()
+                .antMatchers("/api/auth/login","/api/auth/signup","/api/auth/admin/login").permitAll()
                 .antMatchers("/api/client/**").permitAll()
                 .antMatchers("/api/checkout/**").permitAll()
                 .antMatchers("/api/products/**", "api/users/**").hasRole("ADMIN")
-                .antMatchers("/api/brands/**", "/api/categories/**").hasRole("ADMIN")
-                .antMatchers("/api/orders/**").hasRole("ADMIN")
+                .antMatchers("/api/brands/**", "/api/categories/**","/api/orders/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(authEntryPointJwt)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -78,7 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000","http://localhost:3001"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("authorization", "content-type", "x-auth-token"));
         configuration.setAllowCredentials(true);

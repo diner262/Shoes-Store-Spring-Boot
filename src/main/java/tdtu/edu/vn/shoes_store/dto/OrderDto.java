@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tdtu.edu.vn.shoes_store.model.OrderDetail;
-import tdtu.edu.vn.shoes_store.model.User;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,10 +24,13 @@ public class OrderDto {
 
     private double totalPrice;
 
+    private List<ProductOrderDto> products = new ArrayList<>();
+
+    private String delivery;
 //    private List<OrderDetail> orderDetail = new ArrayList<>();
 
     @Builder
-    public OrderDto(Long id,  Date date, String status, String payment,String email,String address, double totalPrice) {
+    public OrderDto(Long id,  Date date, String status, String payment,String email,String address, double totalPrice,String delivery) {
         this.id = id;
         this.date = date;
         this.status = status;
@@ -37,6 +38,7 @@ public class OrderDto {
         this.email = email;
         this.address = address;
         this.totalPrice = totalPrice;
+        this.delivery = delivery;
 //        this.orderDetail = orderDetail;
     }
 }

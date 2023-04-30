@@ -23,16 +23,25 @@ public class Order {
     @Temporal(TemporalType.DATE)
     private Date date;
 
+    @Column(name = "status")
     private String status;
 
+
+    @Column(name = "payment")
     private String payment;
 
+
+    @Column(name = "email",nullable = false, unique = true)
     private String email;
 
+    @Column(name = "address",nullable = false)
     private String address;
 
+    @Column(name = "total_price",nullable = false)
     private double totalPrice;
 
+    @Column(name = "delivery",nullable = false)
+    private String delivery;
     @OneToMany(cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetail = new ArrayList<>();
 
