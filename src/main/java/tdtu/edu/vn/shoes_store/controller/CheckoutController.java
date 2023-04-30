@@ -83,7 +83,7 @@ public class CheckoutController {
             emailService.sendEmail(order.getEmail(), "Thanks for your order", "\n" +
                     "Xin chào "+order.getEmail()+",\n" +
                     " \n" +
-                    "Đơn hàng với mã: "+order.getId()+" của bạn đã được giao thành công ngày "+order.getDate()+".\n" +
+                    "Đơn hàng với mã: "+order.getId()+" của bạn đã được đặt thành công ngày "+order.getDate()+".\n" +
                     "\n" +
                     "Vui lòng đăng nhập Shoes Shop để xác nhận bạn đã nhận hàng và hài lòng với sản phẩm trong vòng 7 ngày. Sau khi bạn xác nhận, chúng tôi sẽ thanh toán cho Người bán giày.\n" +
                     "Nếu bạn không xác nhận trong khoảng thời gian này, Shoes Shop cũng sẽ thanh toán cho Người bán.");
