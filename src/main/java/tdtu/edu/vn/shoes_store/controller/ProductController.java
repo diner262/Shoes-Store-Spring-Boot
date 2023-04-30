@@ -52,7 +52,7 @@ public class ProductController {
         return getProductDtoBody(productService.getProductById(id));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable(name = "id") Long id) {
         Map<String, Object> result = new HashMap<>();
         Product product = productService.getProductById(id);
@@ -75,6 +75,7 @@ public class ProductController {
         Product product = productService.getProductById(id);
         if(product != null) {
             product = getProductBody(productDto);
+            product.setId(id);
             productService.updateProduct(product);
             result.put("statusCode", HttpStatus.OK.value());
             result.put("message", "Update product successfully!");
@@ -99,7 +100,6 @@ public class ProductController {
      private Product getProductBody(ProductDto productDto) {
         Product product = new Product();
 
-        if(productDto.getId() != null) product.setId(productDto.getId());
         if(productDto.getName() != null) product.setName(productDto.getName());
         if(productDto.getDescription() != null) product.setDescription(productDto.getDescription());
         if(productDto.getImage() != null) product.setImage(productDto.getImage());
@@ -121,7 +121,7 @@ public class ProductController {
     private ProductDto getProductDtoBody(Product product) {
         ProductDto productDto = new ProductDto();
 
-        if(product.getId() != null) productDto.setId(product.getId());
+        if (product.getId() != null) productDto.setId(product.getId());
         if(product.getName() != null) productDto.setName(product.getName());
         if(product.getDescription() != null) productDto.setDescription(product.getDescription());
         if(product.getImage() != null) productDto.setImage(product.getImage());

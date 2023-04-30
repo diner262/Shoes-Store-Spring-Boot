@@ -210,7 +210,6 @@ public class UserController {
     }
     @PutMapping("/profile")
     public ResponseEntity<?> updateUserByToken(HttpServletRequest request, @RequestBody UserDto userDto) {
-
         String token = request.getHeader("Authorization").substring(7);
 
         UserDto updatedUser = userService.updateUserByToken(token, userDto,userDto.getPasswordConfirm());
