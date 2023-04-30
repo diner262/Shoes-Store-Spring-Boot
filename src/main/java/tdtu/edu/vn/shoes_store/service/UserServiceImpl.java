@@ -92,14 +92,13 @@ public class UserServiceImpl implements UserService {
             user.setGender(userDto.getGender());
 //            user.setPassword(userDto.getPassword());
             user.setPhone(userDto.getPhone());
-            Optional<Role> role = roleRepository.findById(userDto.getRole()); // tìm kiếm role trong cơ sở dữ liệu
-            if (!role.isPresent()) { // nếu không tìm thấy role, trả về null
-                return null;
-            }
-            user.setRole(role.get()); //
+//            Optional<Role> role = roleRepository.findById(userDto.getRole()); // tìm kiếm role trong cơ sở dữ liệu
+//            if (!role.isPresent()) { // nếu không tìm thấy role, trả về null
+//                return null;
+//            }
             User updatedUser = userRepository.save(user);
             UserDto updatedUserDto = new UserDto();
-            updatedUserDto.setId(updatedUser.getId());
+            updatedUserDto.setId(id);
             updatedUserDto.setAddress(updatedUser.getAddress());
             updatedUserDto.setAge(updatedUser.getAge());
             updatedUserDto.setEmail(updatedUser.getEmail());
