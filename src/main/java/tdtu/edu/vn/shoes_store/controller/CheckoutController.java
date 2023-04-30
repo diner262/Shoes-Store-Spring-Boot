@@ -4,6 +4,8 @@ package tdtu.edu.vn.shoes_store.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +14,13 @@ import tdtu.edu.vn.shoes_store.model.*;
 import tdtu.edu.vn.shoes_store.repository.OrderDetailRepository;
 import tdtu.edu.vn.shoes_store.repository.OrderRepository;
 import tdtu.edu.vn.shoes_store.security.jwt.JwtTokenUtil;
+import tdtu.edu.vn.shoes_store.service.EmailService;
 import tdtu.edu.vn.shoes_store.service.OrderService;
 import tdtu.edu.vn.shoes_store.service.ProductService;
 import tdtu.edu.vn.shoes_store.service.UserService;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -38,6 +43,10 @@ public class CheckoutController {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private EmailService emailService;
+
 
     @PostMapping()
     public ResponseEntity<?> checkOut(@RequestBody Checkout checkout , HttpServletRequest request){
@@ -71,6 +80,20 @@ public class CheckoutController {
             orderDetailRepository.save(newOrderDetail1);
         }
         orderRepository.save(order);
+        try {
+            // Gửi email tới người dùng
+            emailService.sendEmail(order.getEmail(), "Thanks for your order", "\n" +
+                    "Xin chào "+order.getEmail()+",\n" +
+                    " \n" +
+                    "Đơn hàng với mã: "+order.getId()+" của bạn đã được giao thành công ngày "+order.getDate()+".\n" +
+                    "\n" +
+                    "Vui lòng đăng nhập Shoes Shop để xác nhận bạn đã nhận hàng và hài lòng với sản phẩm trong vòng 7 ngày. Sau khi bạn xác nhận, chúng tôi sẽ thanh toán cho Người bán giày.\n" +
+                    "Nếu bạn không xác nhận trong khoảng thời gian này, Shoes Shop cũng sẽ thanh toán cho Người bán.");
+        } catch (MessagingException e) {
+            // Xử lý lỗi nếu có
+            e.printStackTrace();
+        }
+
         result.put("message", "Order created successfully");
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
