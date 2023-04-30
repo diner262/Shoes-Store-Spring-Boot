@@ -64,8 +64,6 @@ public class CheckoutController {
         order.setOrderDetail(new ArrayList<>());
         order.setDelivery(checkout.getDelivery());
 
-
-
         for(DetailCheckout orderDetail: checkout.getDetailCheckout()){
             Product product = productService.getProductById(orderDetail.getProductId());
             OrderDetail newOrderDetail1 = new OrderDetail();

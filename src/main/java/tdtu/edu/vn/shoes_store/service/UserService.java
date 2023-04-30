@@ -21,6 +21,6 @@ public interface UserService {
 
     UserDto findUserByToken(String token);
 
-
+    boolean changePassword(String token,String passwordConfirm,String passwordNew);
 
 }

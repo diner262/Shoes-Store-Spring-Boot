@@ -221,7 +221,26 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public boolean changePassword(String token, String passwordConfirm, String passwordNew) {
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        Optional<User> optionalUser = userRepository.findUsersByEmail(username);
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            if(passwordEncoder.matches(passwordConfirm,user.getPassword())){
 
+                user.setPassword(passwordEncoder.encode(passwordNew));
+                userRepository.save(user);
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
 
 
 }
