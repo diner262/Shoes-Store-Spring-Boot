@@ -20,7 +20,7 @@ public class Product {
     private double price;
     private String description;
     @ElementCollection
-    private List<String> size;
+    private List<Integer> size;
     private int quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)

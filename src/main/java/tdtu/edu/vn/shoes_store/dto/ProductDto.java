@@ -14,15 +14,15 @@ public class ProductDto {
     private String name;
     private double price;
     private String description;
-    private List<String> size;
+    private List<Integer> size;
     private int quantity;
-    private String brands;
-    private String categories;
+    private Long brands;
+    private Long categories;
     private List<Long> relatedProducts;
     private String image;
 
     @Builder
-    public ProductDto(Long id, String name, double price, String description, List<String> size, int quantity, String brands, String categories, List<Long> relatedProducts, String image) {
+    public ProductDto(Long id, String name, double price, String description, List<Integer> size, int quantity, Long brands, Long categories, List<Long> relatedProducts, String image) {
         this.id = id;
         this.name = name;
         this.price = price;
