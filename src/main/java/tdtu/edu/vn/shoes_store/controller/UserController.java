@@ -110,6 +110,27 @@ public class UserController {
     }
 
 
+    @PutMapping("/updatePass")
+    public ResponseEntity<?> updatePassword(HttpServletRequest request,@RequestBody Map<String, String> passwordMap){
+        Map<String, Object> result = new HashMap<>();
+
+        String token = request.getHeader("Authorization").substring(7);
+        String passwordConfirm = passwordMap.get("passwordConfirm");
+        String passwordNew = passwordMap.get("passwordNew");
+
+        boolean match = match = userService.changePassword(token, passwordConfirm,passwordNew);
+        if(match){
+            result.put("statusCode", HttpStatus.OK.value());
+            result.put("message","Update password successfully!");
+            return  new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        else {
+            result.put("statusCode", HttpStatus.NOT_FOUND.value());
+            result.put("message","Wrong password confirm!");
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
+
+    }
     @PutMapping("/profile")
     public ResponseEntity<?> updateUserByToken(HttpServletRequest request, @RequestBody UserDto userDto) {
         String token = request.getHeader("Authorization").substring(7);
