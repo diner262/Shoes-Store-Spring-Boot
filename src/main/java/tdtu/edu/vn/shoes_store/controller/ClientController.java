@@ -81,8 +81,8 @@ public class ClientController {
         if(product.getName() != null) productDto.setName(product.getName());
         if(product.getDescription() != null) productDto.setDescription(product.getDescription());
         if(product.getImage() != null) productDto.setImage(product.getImage());
-        if(product.getBrands() != null) productDto.setBrands(product.getBrands().getName());
-        if(product.getCategories() != null) productDto.setCategories(product.getCategories().getName());
+        if(product.getBrands() != null) productDto.setBrands(product.getBrands().getId());
+        if(product.getCategories() != null) productDto.setCategories(product.getCategories().getId());
         if(product.getSize() != null) productDto.setSize(product.getSize());
         if(product.getRelatedProducts() != null) productDto.setRelatedProducts(product.getRelatedProducts());
         productDto.setPrice(product.getPrice());

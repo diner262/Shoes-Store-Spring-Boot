@@ -96,11 +96,6 @@ public class ProductController {
         return getListProduct(productService.getAllProductByCategories(id));
     }
 
-//    @GetMapping("/getByBrandsAndCategories")
-//    public List<ProductDto> getAllProductByBrandsAndCategories(@RequestParam Long brand, @RequestParam Long category) {
-//        return getListProduct(productService.getAllProductByBrandsAndCategories(brand, category));
-//    }
-
      private Product getProductBody(ProductDto productDto) {
         Product product = new Product();
 
@@ -109,10 +104,10 @@ public class ProductController {
         if(productDto.getDescription() != null) product.setDescription(productDto.getDescription());
         if(productDto.getImage() != null) product.setImage(productDto.getImage());
         if(productDto.getBrands() != null) {
-            product.setBrands(brandsService.findByName(productDto.getBrands()));
+            product.setBrands(brandsService.findById(productDto.getBrands()));
         }
         if(productDto.getCategories() != null) {
-            product.setCategories(categoriesService.findByName(productDto.getCategories()));
+            product.setCategories(categoriesService.findById(productDto.getCategories()));
         }
 
         if(productDto.getSize() != null) product.setSize(productDto.getSize());
@@ -130,8 +125,8 @@ public class ProductController {
         if(product.getName() != null) productDto.setName(product.getName());
         if(product.getDescription() != null) productDto.setDescription(product.getDescription());
         if(product.getImage() != null) productDto.setImage(product.getImage());
-        if(product.getBrands() != null) productDto.setBrands(product.getBrands().getName());
-        if(product.getCategories() != null) productDto.setCategories(product.getCategories().getName());
+        if(product.getBrands() != null) productDto.setBrands(product.getBrands().getId());
+        if(product.getCategories() != null) productDto.setCategories(product.getCategories().getId());
         if(product.getSize() != null) productDto.setSize(product.getSize());
         if(product.getRelatedProducts() != null) productDto.setRelatedProducts(product.getRelatedProducts());
         productDto.setPrice(product.getPrice());
